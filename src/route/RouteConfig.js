@@ -54,7 +54,7 @@ export default class RouteConfig {
 
 
 	getRouteFor (obj) {
-		return typeof object === 'string' ? this.getRouteForName(obj) : this.getRouteForObject(obj);
+		return typeof obj === 'string' ? this.getRouteForName(obj) : this.getRouteForObject(obj);
 	}
 
 

@@ -49,7 +49,7 @@ function SubCmp () {
 const Sub = Router.for(
 	Route({path: '/a', component: CmpA}),
 	Route({path: '/b', component: CmpB}),
-	Route({path: '/', component: SubCmp})
+	Route({path: '/', component: SubCmp, name: 'sub-root'})
 );
 
 const Test = Router.for(

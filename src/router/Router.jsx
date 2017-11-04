@@ -30,7 +30,8 @@ export default class Router extends React.Component {
 	static contextTypes = {
 		router: PropTypes.shape({
 			history: PropTypes.object,
-			route: PropTypes.object
+			route: PropTypes.object,
+			getRouteFor: PropTypes.func
 		})
 	}
 
@@ -44,13 +45,14 @@ export default class Router extends React.Component {
 		return {
 			router: {
 				...this.context.router,
-				getRouteFor: (...args) => this.getRouteFor(...args)
+				getRouteFor: (...args) => this.getRouteFor(...args),
+				baseroute: this.baseroute
 			}
 		};
 	}
 
 	get router () {
-		return this.context.router;
+		return this.context.router || {};
 	}
 
 
@@ -60,11 +62,13 @@ export default class Router extends React.Component {
 		return router ? router.history : null;
 	}
 
+
 	get route () {
 		const {router} = this;
 
 		return router ? router.route : null;
 	}
+
 
 	get baseroute () {
 		const {route} = this;
@@ -75,11 +79,18 @@ export default class Router extends React.Component {
 	}
 
 
+	get parentGetRouteFor () {
+		return this.router.getRouteFor;
+	}
+
+
 	getRouteFor (...args) {
-		const {baseroute} = this;
+		const {baseroute, parentGetRouteFor} = this;
 		const {_router} = this.props;
 
-		return _router.getRouteFor(baseroute, ...args);
+		const route = _router.getRouteFor(baseroute, ...args);
+
+		return route || (parentGetRouteFor && parentGetRouteFor(...args));
 	}
 
 
@@ -109,7 +120,7 @@ export default class Router extends React.Component {
 		if (!_router) {
 			return React.Children.only(children);
 		}
-		debugger;
+
 		return (
 			<Switch>
 				{_router.map((route, index) => this.renderRoute(route, index))}
