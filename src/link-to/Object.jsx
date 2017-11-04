@@ -45,7 +45,7 @@ export default class ObjectLink extends React.Component {
 	}
 
 	render () {
-		const {object, ...otherProps} = this;
+		const {object, ...otherProps} = this.props;
 		const path = this.getPathFor(object);
 
 		return (

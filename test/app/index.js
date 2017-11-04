@@ -3,6 +3,8 @@ import ReactDom from 'react-dom';
 
 import {Router, LinkTo, Route} from '../../src';
 
+const TEST_MIME_TYPE = 'test-mime-type';
+
 function Root () {
 	return (
 		<div>
@@ -17,6 +19,7 @@ function CmpA () {
 		<div>
 			<LinkTo.Name name="root">Root</LinkTo.Name>
 			<LinkTo.Name name="sub-root">Sub Root</LinkTo.Name>
+			<LinkTo.Object object={{MimeType: TEST_MIME_TYPE}}>Object</LinkTo.Object>
 
 			<h2>Nested A</h2>
 		</div>
@@ -48,7 +51,11 @@ function SubCmp () {
 
 const Sub = Router.for(
 	Route({path: '/a', component: CmpA}),
-	Route({path: '/b', component: CmpB}),
+	Route({path: '/b', component: CmpB, getRouteFor: (obj) => {
+		if (obj.MimeType === TEST_MIME_TYPE) {
+			return '/b';
+		}
+	}}),
 	Route({path: '/', component: SubCmp, name: 'sub-root'})
 );
 
