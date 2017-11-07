@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	BrowserRouter,
 	Route,
 	Switch
 } from 'react-router-dom';
 
+import BrowserRouter from './BrowserRouter';
 import RouterConfig from './RouterConfig';
 
 export default class Router extends React.Component {
@@ -23,7 +23,6 @@ export default class Router extends React.Component {
 	static propTypes = {
 		_router: PropTypes.object.isRequired,
 		match: PropTypes.object,
-		basepath: PropTypes.string,
 		children: PropTypes.node
 	}
 
@@ -71,11 +70,11 @@ export default class Router extends React.Component {
 
 
 	get baseroute () {
-		const {route} = this;
+		const {route, router} = this;
 		const {match:propMatch} = this.props;
 		const match = propMatch || (route && route.match);
 
-		return match ? match.url : '';
+		return match ? match.url : (router.baseroute || '');
 	}
 
 
@@ -104,10 +103,10 @@ export default class Router extends React.Component {
 
 
 	renderRouter () {
-		const {basepath} = this.props;
+		const {...otherProps} = this.props;
 
 		return (
-			<BrowserRouter basepath={basepath}>
+			<BrowserRouter {...otherProps} >
 				{this.renderRoutes()}
 			</BrowserRouter>
 		);
