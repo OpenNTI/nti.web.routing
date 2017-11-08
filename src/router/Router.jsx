@@ -9,6 +9,23 @@ import BrowserRouter from './BrowserRouter';
 import RouterConfig from './RouterConfig';
 
 export default class Router extends React.Component {
+	static connect (...args) {
+		const router = new RouterConfig(...args);
+
+		return function (Component) {
+			TempRouter.Router = router;
+			function TempRouter (props) {
+				return (
+					<Component {...props}>
+						<Router _router={router} {...props} />
+					</Component>
+				);
+			}
+
+			return TempRouter;
+		};
+	}
+
 	static for (...args) {
 		const router = new RouterConfig(...args);
 
@@ -22,6 +39,8 @@ export default class Router extends React.Component {
 
 	static propTypes = {
 		_router: PropTypes.object.isRequired,
+		routeProps: PropTypes.object,
+
 		match: PropTypes.object,
 		children: PropTypes.node
 	}
@@ -130,7 +149,8 @@ export default class Router extends React.Component {
 
 	renderRoute (route, index) {
 		const {baseroute} = this;
-		const config = route.getRouteConfig(baseroute);
+		const {routeProps} = this.props;
+		const config = route.getRouteConfig(baseroute, routeProps);
 
 		return (
 			<Route key={index} {...config} />

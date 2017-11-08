@@ -1,5 +1,6 @@
 import Path from 'path';
 
+import React from 'react';
 import {defineProtected} from 'nti-commons';
 
 const HAS_PARAMS = /:/g;
@@ -31,15 +32,23 @@ export default class RouteConfig {
 		if (config.name && this.hasPathParams()) { throw new Error('Named route cannot have params'); }
 	}
 
-	getRouteConfig (basepath) {
+	getRouteConfig (basepath, routeProps) {
 		const {path, exact, strict, component} = this.config || {};
-
-		return {
+		const config = {
 			path: Path.join(basepath, path || ''),
 			exact,
-			strict,
-			component
+			strict
 		};
+
+		if (routeProps) {
+			config.render = function RouterWrapper (props) {
+				return React.createElement(component, {...props, ...routeProps});
+			};
+		} else {
+			config.component = component;
+		}
+
+		return config;
 	}
 
 
