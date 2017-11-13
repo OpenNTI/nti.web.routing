@@ -20,7 +20,7 @@ export default class RouterConfig {
 	 * @param  {[RouteConfig]} routes a list of route configs
 	 * @return {RouterConfig}           a router config for the given routes
 	 */
-	constructor (...routes) {
+	constructor (routes) {
 		Object.defineProperties(this, {
 			...defineProtected({
 				routes

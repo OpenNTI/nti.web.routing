@@ -9,29 +9,16 @@ import BrowserRouter from './BrowserRouter';
 import RouterConfig from './RouterConfig';
 
 export default class Router extends React.Component {
-	static connect (...args) {
-		const router = new RouterConfig(...args);
-
-		return function (Component) {
-			TempRouter.Router = router;
-			function TempRouter (props) {
-				return (
-					<Component {...props}>
-						<Router _router={router} {...props} />
-					</Component>
-				);
-			}
-
-			return TempRouter;
-		};
-	}
-
-	static for (...args) {
-		const router = new RouterConfig(...args);
+	static for (routes, Frame) {
+		const router = new RouterConfig(routes);
 
 		TempRouter.Router = router;
 		function TempRouter (props) {
-			return (<Router _router={router} {...props} />);
+			const routerCmp = (<Router _router={router} {...props} />);
+
+			return Frame ?
+				(<Frame {...props}>{routerCmp}</Frame>) :
+				routerCmp;
 		}
 
 		return TempRouter;
