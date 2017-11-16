@@ -15,7 +15,8 @@ export default class ObjectLink extends React.Component {
 		object: PropTypes.oneOfType([
 			PropTypes.object,
 			PropTypes.string
-		])
+		]),
+		context: PropTypes.any
 	}
 
 	static contextTypes = {
@@ -34,19 +35,19 @@ export default class ObjectLink extends React.Component {
 		return router.getRouteFor;
 	}
 
-	getPathFor (object) {
+	getPathFor (object, context) {
 		const {getRouteFor} = this;
 
 		if (typeof object === 'string' || !getRouteFor) { return getObjectURL(object); }
 
-		const path = getRouteFor(object);
+		const path = getRouteFor(object, context);
 
 		return path || ObjectLink.getPathFor(object);
 	}
 
 	render () {
-		const {object, ...otherProps} = this.props;
-		const path = this.getPathFor(object);
+		const {object, context, ...otherProps} = this.props;
+		const path = this.getPathFor(object, context);
 
 		return (
 			<Path to={path} {...otherProps} />

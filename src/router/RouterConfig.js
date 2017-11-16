@@ -2,9 +2,9 @@ import Path from 'path';
 
 import {defineProtected} from 'nti-commons';
 
-function getSubRoute (routes, obj) {
+function getSubRoute (routes, args) {
 	for (let route of routes) {
-		let subRoute = route.getRouteFor && route.getRouteFor(obj);
+		let subRoute = route.getRouteFor && route.getRouteFor(...args);
 
 		if (subRoute) {
 			return subRoute;
@@ -32,8 +32,8 @@ export default class RouterConfig {
 		return this.routes.map(fn);
 	}
 
-	getRouteFor (basePath, obj) {
-		const subRoute = getSubRoute(this.routes, obj);
+	getRouteFor (basePath, ...args) {
+		const subRoute = getSubRoute(this.routes, args);
 
 		return subRoute ? Path.join(basePath, subRoute) : null;
 	}

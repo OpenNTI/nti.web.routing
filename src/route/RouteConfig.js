@@ -41,6 +41,7 @@ export default class RouteConfig {
 		};
 
 		if (routeProps) {
+			//Potential memory leak creating a function everytime, but I can't think of a way around it...
 			config.render = function RouterWrapper (props) {
 				return React.createElement(component, {...props, ...routeProps});
 			};
@@ -62,8 +63,8 @@ export default class RouteConfig {
 	}
 
 
-	getRouteFor (obj) {
-		return typeof obj === 'string' ? this.getRouteForName(obj) : this.getRouteForObject(obj);
+	getRouteFor (obj, ...args) {
+		return typeof obj === 'string' ? this.getRouteForName(obj) : this.getRouteForObject(obj, args);
 	}
 
 
@@ -83,10 +84,10 @@ export default class RouteConfig {
 	}
 
 
-	getRouteForObject (obj) {
+	getRouteForObject (obj, args) {
 		const {config} = this;
 		//if this route can handle the obj return that object
-		const route = config.getRouteFor ? config.getRouteFor(obj) : null;
+		const route = config.getRouteFor ? config.getRouteFor(obj, ...args) : null;
 
 		if (route) { return route; }
 
