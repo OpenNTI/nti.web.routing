@@ -5,16 +5,18 @@ import {
 	Switch
 } from 'react-router-dom';
 
+import {WithTitle} from '../view';
+
 import BrowserRouter from './BrowserRouter';
 import RouterConfig from './RouterConfig';
 
 export default class Router extends React.Component {
-	static for (routes, Frame) {
+	static for (routes, Frame, title) {
 		const router = new RouterConfig(routes);
 
 		TempRouter.Router = router;
 		function TempRouter (props) {
-			const routerCmp = (<Router _router={router} {...props} />);
+			const routerCmp = (<Router _router={router} title={title} {...props} />);
 
 			return Frame ?
 				(<Frame {...props}>{routerCmp}</Frame>) :
@@ -27,6 +29,7 @@ export default class Router extends React.Component {
 	static propTypes = {
 		_router: PropTypes.object.isRequired,
 		routeProps: PropTypes.object,
+		title: PropTypes.string,
 
 		match: PropTypes.object,
 		children: PropTypes.node
@@ -100,11 +103,18 @@ export default class Router extends React.Component {
 
 
 	render () {
+		const {title} = this.props;
 		const {history} = this;
 
-		return history ?
-			this.renderRoutes() :
-			this.renderRouter();
+		return (
+			<WithTitle title={title}>
+				{
+					history ?
+						this.renderRoutes() :
+						this.renderRouter()
+				}
+			</WithTitle>
+		);
 	}
 
 

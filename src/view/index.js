@@ -1,0 +1,1 @@
+export WithTitle from './WithTitle';
