@@ -36,7 +36,7 @@ export default class RouteConfig {
 		if (config.name && this.hasPathParams()) { throw new Error('Named route cannot have params'); }
 	}
 
-	getRouteConfig (basepath, frame) {
+	getRouteConfig (basepath, frame, routerProps) {
 		const {path, exact, strict, component, frameless, props:componentProps} = this.config || {};
 		const config = {
 			path: Path.join(basepath, path || ''),
@@ -46,7 +46,7 @@ export default class RouteConfig {
 
 		//Potential memory leak creating a function everytime, but I can't think of a way around it...
 		config.render = function InlineRouterWrapper (props) {
-			return React.createElement(RouteWrapper, {routeProps: props, component, frameless, frame, componentProps });
+			return React.createElement(RouteWrapper, {routeProps: props, component, frameless, frame, componentProps, routerProps });
 		};
 
 		return config;

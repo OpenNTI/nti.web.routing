@@ -24,9 +24,24 @@ export default class Router extends React.Component {
 		const {frame, title} = config || {};
 
 		InlineRouter.Router = router;
+		InlineRouter.propTypes = {
+			match: PropTypes.object,//if the router is being used as a component for another route, it will be given a match that we need to use
+			history: PropTypes.object,
+			location: PropTypes.object
+		};
 		function InlineRouter (props) {
+			const {match, history, location, ...otherProps} = props;
+
 			return (
-				<Router _router={router} frame={frame} title={title} {...props} />
+				<Router
+					_router={router}
+					_routerProps={otherProps}
+					frame={frame}
+					title={title}
+					match={match}
+					history={history}
+					location={location}
+				/>
 			);
 		}
 
@@ -35,9 +50,13 @@ export default class Router extends React.Component {
 
 	static propTypes = {
 		_router: PropTypes.object.isRequired,
+		_routerProps: PropTypes.object,
 
 		title: PropTypes.string,
-		frame: PropTypes.element,
+		frame: PropTypes.oneOfType([
+			PropTypes.element,
+			PropTypes.func
+		]),
 
 		match: PropTypes.object,
 		children: PropTypes.node
@@ -154,8 +173,8 @@ export default class Router extends React.Component {
 
 	renderRoute (route, index) {
 		const {baseroute} = this;
-		const {frame} = this.props;
-		const config = route.getRouteConfig(baseroute, frame);
+		const {frame, _routerProps} = this.props;
+		const config = route.getRouteConfig(baseroute, frame, _routerProps);
 
 		return (
 			<Route key={index} {...config} />
