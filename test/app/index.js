@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 
 import {Router, LinkTo, Route, View} from '../../src';
@@ -57,6 +58,18 @@ function SubCmp () {
 	);
 }
 
+Frame.propTypes = {
+	children: PropTypes.any
+};
+function Frame ({children}) {
+	return (
+		<div className="sub-frame">
+			<div>frame</div>
+			{children}
+		</div>
+	);
+}
+
 const Sub = Router.for([
 	Route({path: '/a', component: CmpA}),
 	Route({path: '/b', component: CmpB, getRouteFor: (obj) => {
@@ -65,12 +78,12 @@ const Sub = Router.for([
 		}
 	}}),
 	Route({path: '/', component: SubCmp, name: 'sub-root'})
-], null);
+], {frame: Frame});
 
 const Test = Router.for([
 	Route({path: '/sub', component: Sub}),
 	Route({path: '/', component: Root, name: 'root'})
-], null, 'root');
+], {title: 'root'});
 
 ReactDom.render(
 	React.createElement(Test, {}),

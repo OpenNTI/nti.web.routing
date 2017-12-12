@@ -11,25 +11,33 @@ import BrowserRouter from './BrowserRouter';
 import RouterConfig from './RouterConfig';
 
 export default class Router extends React.Component {
-	static for (routes, Frame, title) {
+	/**
+	 * Create a Router component for a given set of routes
+	 * @param  {Array} routes    the list of routes to include in the router
+	 * @param  {Object} config   different configurations to control how the router works
+	 * @param {Component} frame  the component to render as a frame around the routes
+	 * @param {String} title     a title to use when the route is active
+	 * @return {Router}          Router component for given routes and config
+	 */
+	static for (routes, config) {
 		const router = new RouterConfig(routes);
+		const {frame, title} = config || {};
 
-		TempRouter.Router = router;
-		function TempRouter (props) {
-			const routerCmp = (<Router _router={router} title={title} {...props} />);
-
-			return Frame ?
-				(<Frame {...props}>{routerCmp}</Frame>) :
-				routerCmp;
+		InlineRouter.Router = router;
+		function InlineRouter (props) {
+			return (
+				<Router _router={router} frame={frame} title={title} {...props} />
+			);
 		}
 
-		return TempRouter;
+		return InlineRouter;
 	}
 
 	static propTypes = {
 		_router: PropTypes.object.isRequired,
-		routeProps: PropTypes.object,
+
 		title: PropTypes.string,
+		frame: PropTypes.element,
 
 		match: PropTypes.object,
 		children: PropTypes.node
@@ -146,8 +154,8 @@ export default class Router extends React.Component {
 
 	renderRoute (route, index) {
 		const {baseroute} = this;
-		const {routeProps} = this.props;
-		const config = route.getRouteConfig(baseroute, routeProps);
+		const {frame} = this.props;
+		const config = route.getRouteConfig(baseroute, frame);
 
 		return (
 			<Route key={index} {...config} />

@@ -3,6 +3,8 @@ import Path from 'path';
 import React from 'react';
 import {defineProtected} from 'nti-commons';
 
+import RouteWrapper from './RouteWrapper';
+
 const HAS_PARAMS = /:/g;
 
 export default class RouteConfig {
@@ -11,15 +13,17 @@ export default class RouteConfig {
 	 *
 	 * See: https://reacttraining.com/react-router/web/api/Route for an explanation of the config
 	 *
-	 * @param  {Object} config the config for the route
-	 * @param {String} config.path the path to match for the route
-	 * @param {Boolean} config.exact the path has to match the location exactly
-	 * @param {Boolean} config.strict the path has to match the location strictly
-	 * @param {Object} config.component the component to render, if the component statically defines Router  it will be used for config.Router
-	 * @param {Object} config.router a sub router
-	 * @param {String} config.name name to find the route by
+	 * @param  {Object} config              the config for the route
+	 * @param {String} config.path          the path to match for the route
+	 * @param {Boolean} config.exact        the path has to match the location exactly
+	 * @param {Boolean} config.strict       the path has to match the location strictly
+	 * @param {Object} config.component     the component to render, if the component statically defines Router  it will be used for config.Router
+	 * @param {Object} config.router        a sub router
+	 * @param {String} config.name          name to find the route by
+	 * @param {Boolean} config.frameless    breakout of the frame
+	 * @param {Object} config.props         extra props to pass to the component for the route
 	 * @param {Function} config.getRouteFor a method that takes an object and returns a route if it can handle showing it
-	 * @return {[type]}        [description]
+	 * @return {RouteConfig}                a RouteConfig for the given config
 	 */
 	constructor (config) {
 		Object.defineProperties(this, {
@@ -32,22 +36,18 @@ export default class RouteConfig {
 		if (config.name && this.hasPathParams()) { throw new Error('Named route cannot have params'); }
 	}
 
-	getRouteConfig (basepath, routeProps) {
-		const {path, exact, strict, component} = this.config || {};
+	getRouteConfig (basepath, frame) {
+		const {path, exact, strict, component, frameless, props:componentProps} = this.config || {};
 		const config = {
 			path: Path.join(basepath, path || ''),
 			exact,
 			strict
 		};
 
-		if (routeProps) {
-			//Potential memory leak creating a function everytime, but I can't think of a way around it...
-			config.render = function RouterWrapper (props) {
-				return React.createElement(component, {...props, ...routeProps});
-			};
-		} else {
-			config.component = component;
-		}
+		//Potential memory leak creating a function everytime, but I can't think of a way around it...
+		config.render = function InlineRouterWrapper (props) {
+			return React.createElement(RouteWrapper, {routeProps: props, component, frameless, frame, componentProps });
+		};
 
 		return config;
 	}
