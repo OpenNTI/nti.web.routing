@@ -5,11 +5,15 @@ import {encodeForURI} from 'nti-lib-ntiids';
 import Path from './Path';
 
 function getObjectURL (ntiid) {
+	if (!ntiid) {
+		return '#';
+	}
+
 	return `/object/${encodeForURI(ntiid, true)}`;
 }
 
 export default class ObjectLink extends React.Component {
-	static getPathFor (obj) { return getObjectURL(obj.ntiid || obj); }
+	static getPathFor (obj) { return getObjectURL(typeof obj === 'string' ? obj : obj.NTIID); }
 
 	static propTypes = {
 		object: PropTypes.oneOfType([
@@ -38,7 +42,7 @@ export default class ObjectLink extends React.Component {
 	getPathFor (object, context) {
 		const {getRouteFor} = this;
 
-		if (typeof object === 'string' || !getRouteFor) { return getObjectURL(object); }
+		if (typeof object === 'string' || !getRouteFor) { return ObjectLink.getPathFor(object); }
 
 		const path = getRouteFor(object, context);
 
