@@ -24,6 +24,13 @@ export default class PathLink extends React.Component {
 		return this.context.router || {};
 	}
 
+
+	get routePathname () {
+		const {router} = this;
+
+		return router && router.route &&  router.route.location && router.route.location.pathname;
+	}
+
 	get baseroute () {
 		const {router} = this;
 
@@ -33,7 +40,7 @@ export default class PathLink extends React.Component {
 
 	render () {
 		const {to, activeClassName, activeStyle, ...otherProps} = this.props;
-		const path = resolve(this.baseroute, to);
+		const path = resolve(this.routePathname || this.baseroute, to);
 
 		return activeClassName || activeStyle ?
 			(<NavLink to={path} activeClassName={activeClassName} activeStyle={activeStyle} {...otherProps} />) :
