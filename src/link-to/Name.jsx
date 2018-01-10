@@ -5,7 +5,8 @@ import Path from './Path';
 
 export default class NameLink extends React.Component {
 	static propTypes = {
-		name: PropTypes.string
+		name: PropTypes.string,
+		params: PropTypes.object
 	}
 
 	static contextTypes = {
@@ -24,15 +25,15 @@ export default class NameLink extends React.Component {
 		return router.getRouteFor;
 	}
 
-	getPathFor (name) {
+	getPathFor (name, params) {
 		const {getRouteFor} = this;
 
-		return getRouteFor ? (getRouteFor(name) || name) : name;
+		return getRouteFor ? (getRouteFor(name, params) || name) : name;
 	}
 
 	render () {
-		const {name, ...otherProps} = this.props;
-		const path = this.getPathFor(name);
+		const {name, params, ...otherProps} = this.props;
+		const path = this.getPathFor(name, params);
 
 		return (
 			<Path to={path} {...otherProps} />

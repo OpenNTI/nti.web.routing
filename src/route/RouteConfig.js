@@ -4,6 +4,7 @@ import React from 'react';
 import {defineProtected} from 'nti-commons';
 
 import RouteWrapper from './RouteWrapper';
+import {getPartInfo} from './utils';
 
 const HAS_PARAMS = /:/g;
 
@@ -22,6 +23,7 @@ export default class RouteConfig {
 	 * @param {String} config.name          name to find the route by
 	 * @param {Boolean} config.frameless    breakout of the frame
 	 * @param {Object} config.props         extra props to pass to the component for the route
+	 * @param {Function} config.buildPathFor build the url
 	 * @param {Function} config.getRouteFor a method that takes an object and returns a route if it can handle showing it
 	 * @return {RouteConfig}                a RouteConfig for the given config
 	 */
@@ -33,7 +35,7 @@ export default class RouteConfig {
 		});
 
 		if (!config.component) { throw new Error('Cannot define a route without a component'); }
-		if (config.name && this.hasPathParams()) { throw new Error('Named route cannot have params'); }
+		if (!config.path) { throw new Error('Cannot define a route without a path'); }
 	}
 
 	getRouteConfig (basepath, frame, routerProps) {
@@ -57,28 +59,73 @@ export default class RouteConfig {
 		return HAS_PARAMS.test(this.config.path);
 	}
 
-
 	getSubRouter () {
 		return this.config.component.Router || this.config.router;
 	}
 
 
-	getRouteFor (obj, ...args) {
-		return typeof obj === 'string' ? this.getRouteForName(obj) : this.getRouteForObject(obj, args);
+	buildPathFor (params, ...args) {
+		const {config} = this;
+
+		if (config && config.buildPathFor) {
+			return config.buildPathFor(params, ...args);
+		}
+
+		//if there are not params there's nothing to build
+		if (!this.hasPathParams()) {
+			return {
+				path: config.path,
+				canBeBase: true
+			};
+		}
+
+		if (!params || typeof params !== 'object') { params = {}; }
+
+		const parts = config.path.split('/');
+		let path = '';
+		let canBeBase = true;
+
+		for (let i = 0; i < parts.length; i++) {
+			let info = getPartInfo(parts[i]);
+			let data = params[info.name];
+
+			if (!info.isParam) {
+				path = Path.join(path, info.raw);
+			} else if (data !== undefined) {
+				path = Path.join(path, data);
+			//if the param is not required and we are the last one, we have a valid path, it just can't be extended any.
+			} else if (!info.isRequired && i === parts.length - 1) {
+				canBeBase = false;
+			}else {
+				path = null;
+				canBeBase = false;
+				break;
+			}
+		}
+
+		return {
+			path,
+			canBeBase
+		};
 	}
 
 
-	getRouteForName (name) {
-		const {config} = this;
-		//if this route has the same name use it
-		const route = config.name === name ? config.path : null;
+	getRouteFor (obj, ...args) {
+		return typeof obj === 'string' ? this.getRouteForName(obj, args) : this.getRouteForObject(obj, args);
+	}
 
-		if (route) { return route; }
+
+	getRouteForName (name, args) {
+		const {config} = this;
+		const {path, canBeBase} = this.buildPathFor(...args);
+
+		//if this route has the same name use it
+		if (name === config.name && path) { return path; }
 
 		//else if we have a subRouter and our path doesn't have any params we can check the subRouter for the
 		//named route
 		const subRouter = this.getSubRouter();
-		const subRoute = !this.hasPathParams() && subRouter ? subRouter.getRouteFor(config.path, name) : null;
+		const subRoute = canBeBase && subRouter ? subRouter.getRouteFor(path, name) : null;
 
 		return subRoute || null;
 	}
@@ -94,7 +141,7 @@ export default class RouteConfig {
 		//else if we have a subRouter and our path doesn't have any params we can build the subRoute if
 		//we have a subRouter
 		const subRouter = this.getSubRouter();
-		const subRoute = !this.hasPathParams() && subRouter ? subRouter.getRouteFor(config.path, obj) : null;
+		const subRoute = !this.hasPathParams() && subRouter ? subRouter.getRouteFor(config.path, obj, ...args) : null;
 
 		return subRoute || null;
 	}
