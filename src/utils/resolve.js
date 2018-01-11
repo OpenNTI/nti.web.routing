@@ -5,10 +5,10 @@ import {createPath, parsePath} from 'history';
 function resolveLocation (base, location) {
 	const state = location;
 	const path = createPath(location);
-	const resolvedPath = resolve(base, path);
+	const resolvedPath = resolvePath(base, path);
 	const resolvedLocation = parsePath(resolvedPath);
 
-	return {...resolvedLocation, state};
+	return {...state, ...resolvedLocation};
 }
 
 function resolvePath (base, path) {
