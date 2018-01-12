@@ -159,7 +159,7 @@ export default class Router extends React.Component {
 	renderRoutes () {
 		const {_router, children} = this.props;
 
-		if (!_router) {
+		if (React.Children.count(children) > 0) {
 			return React.Children.only(children);
 		}
 
