@@ -13,7 +13,7 @@ function getObjectURL (ntiid) {
 }
 
 export default class ObjectLink extends React.Component {
-	static getPathFor (obj) { return getObjectURL(typeof obj === 'string' ? obj : obj.NTIID); }
+	static getPathFor (obj) { return getObjectURL((!obj || typeof obj === 'string') ? obj : obj.NTIID); }
 
 	static propTypes = {
 		object: PropTypes.oneOfType([
