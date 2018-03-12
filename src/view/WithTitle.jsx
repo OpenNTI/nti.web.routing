@@ -6,7 +6,7 @@ const SEPERATOR = ' - ';
 
 const updateTitle = buffer(300, (title) => {
 	if (typeof document !== 'undefined') {
-		document.title = title;
+		document.title = title || '';
 	}
 });
 
