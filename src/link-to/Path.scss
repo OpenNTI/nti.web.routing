@@ -1,0 +1,8 @@
+.nti-link-to-path {
+	text-decoration: none;
+	outline: none;
+
+	&:focus {
+		outline: none;
+	}
+}

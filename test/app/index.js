@@ -10,7 +10,11 @@ function Root () {
 	return (
 		<View.WithTitle title="Cmp Root">
 			<div>
-				<LinkTo.Path to="/sub">Sub</LinkTo.Path>
+				<LinkTo.Path to="/sub">
+					Sub
+					<LinkTo.Path to="/sub/a">Sub/A</LinkTo.Path>
+					<LinkTo.Path to="/sub/b">Sub/B</LinkTo.Path>
+				</LinkTo.Path>
 				<h1>Root</h1>
 			</div>
 		</View.WithTitle>
