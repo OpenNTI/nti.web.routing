@@ -14,4 +14,8 @@ describe('resolve', () => {
 			pathname: '/base/path/route/route-1'
 		});
 	});
+
+	test('path is fully resolved', () => {
+		expect(resolve('/base/path/route', 'http://www.google.com')).toEqual('http://www.google.com');
+	});
 });

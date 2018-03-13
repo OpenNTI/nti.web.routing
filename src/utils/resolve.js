@@ -2,6 +2,8 @@ import {resolve} from 'path';
 
 import {createPath, parsePath} from 'history';
 
+import isFullyResolved from './is-fully-resolved';
+
 function resolveLocation (base, location) {
 	const state = location;
 	const path = createPath(location);
@@ -12,6 +14,8 @@ function resolveLocation (base, location) {
 }
 
 function resolvePath (base, path) {
+	if (isFullyResolved(path)) { return path; }
+
 	return resolve(base, path);
 }
 
