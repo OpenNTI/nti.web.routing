@@ -69,6 +69,12 @@ class Link extends React.Component {
 	render () {
 		const {to, innerRef, component:Cmp, ...props } = this.props;
 
+		delete props.replace;
+
+		if (isFullyResolved(to)) {
+			return (<Cmp {...props} onClick={this.handleClick} href={to} ref={innerRef} />)
+		}
+
 		const { history } = this.context.router;
 		const location =
 			typeof to === 'string'
@@ -77,8 +83,6 @@ class Link extends React.Component {
 
 		const href = history.createHref(location);
 
-
-		delete props.replace;
 
 		return (
 			<Cmp {...props} onClick={this.handleClick} href={href} ref={innerRef} />
