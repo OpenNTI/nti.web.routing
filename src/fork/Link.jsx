@@ -17,7 +17,8 @@ class Link extends React.Component {
 		replace: PropTypes.bool,
 		to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 		innerRef: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-		component: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
+		component: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+		beforeNavigation: PropTypes.func
 	};
 
 	static defaultProps = {
@@ -39,7 +40,7 @@ class Link extends React.Component {
 		if (this.props.onClick) { this.props.onClick(event); }
 
 		const { history } = this.context.router;
-		const { replace, to } = this.props;
+		const { replace, to, beforeNavigation } = this.props;
 
 		const doReplace = (href) => isFullyResolved(href) ? global.location.replace(href) : history.replace(href);
 		const doPush = (href) => isFullyResolved(href) ? global.location.assign(href) : history.push(href);
@@ -52,6 +53,10 @@ class Link extends React.Component {
 			this.context.router // if we aren't in a router let the browser handle it
 		) {
 			event.preventDefault();
+
+			if (beforeNavigation) {
+				beforeNavigation();
+			}
 
 			if (replace) {
 				doReplace(to);
