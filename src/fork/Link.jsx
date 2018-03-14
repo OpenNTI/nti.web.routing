@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createLocation } from 'history';
 
+import {isFullyResolved} from '../utils';
+
 const isModifiedEvent = event =>
 	!!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 
@@ -36,6 +38,12 @@ class Link extends React.Component {
 	handleClick = event => {
 		if (this.props.onClick) { this.props.onClick(event); }
 
+		const { history } = this.context.router;
+		const { replace, to } = this.props;
+
+		const doReplace = (href) => isFullyResolved(href) ? global.location.replace(href) : history.replace(href);
+		const doPush = (href) => isFullyResolved(href) ? global.location.assign(href) : history.push(href);
+
 		if (
 			!event.defaultPrevented && // onClick prevented default
 			event.button === 0 && // ignore everything but left clicks
@@ -45,13 +53,12 @@ class Link extends React.Component {
 		) {
 			event.preventDefault();
 
-			const { history } = this.context.router;
-			const { replace, to } = this.props;
-
 			if (replace) {
-				history.replace(to);
+				console.log('Replacing');
+				doReplace(to);
 			} else {
-				history.push(to);
+				console.log('Pushing');
+				doPush(to);
 			}
 		}
 	};
