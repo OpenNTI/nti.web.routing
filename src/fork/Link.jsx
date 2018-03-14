@@ -54,10 +54,8 @@ class Link extends React.Component {
 			event.preventDefault();
 
 			if (replace) {
-				console.log('Replacing');
 				doReplace(to);
 			} else {
-				console.log('Pushing');
 				doPush(to);
 			}
 		}
