@@ -15,6 +15,7 @@ class Link extends React.Component {
 		onClick: PropTypes.func,
 		target: PropTypes.string,
 		replace: PropTypes.bool,
+		download: PropTypes.bool,
 		to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 		innerRef: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 		component: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
@@ -49,6 +50,7 @@ class Link extends React.Component {
 			!event.defaultPrevented && // onClick prevented default
 			event.button === 0 && // ignore everything but left clicks
 			!this.props.target && // let browser handle 'target=_blank' etc.
+			!this.props.download && // let the browser handle downloads
 			!isModifiedEvent(event) && // ignore clicks with modifier keys
 			this.context.router // if we aren't in a router let the browser handle it
 		) {

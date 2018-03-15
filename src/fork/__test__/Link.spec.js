@@ -102,5 +102,17 @@ describe('Link', () => {
 			expect(history.push).not.toHaveBeenCalled();
 			expect(history.replace).toHaveBeenCalledWith('/foo/bar');
 		});
+
+		test('download', () => {
+			const link = renderLink({to: '/document.pdf', download: true});
+
+			link.simulate('click', getClickEvent());
+
+			expect(global.location.assign).not.toHaveBeenCalled();
+			expect(global.location.replace).not.toHaveBeenCalled();
+
+			expect(history.push).not.toHaveBeenCalled();
+			expect(history.replace).not.toHaveBeenCalled();
+		});
 	});
 });
