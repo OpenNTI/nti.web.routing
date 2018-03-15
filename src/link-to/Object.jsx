@@ -53,8 +53,19 @@ export default class ObjectLink extends React.Component {
 		const {object, context, ...otherProps} = this.props;
 		const path = this.getPathFor(object, context);
 
+		let pathProps = {};
+
+		if (typeof path === 'string') {
+			pathProps.to = path;
+		} else {
+			pathProps.to = path.href;
+			pathProps.replace = path.replace;
+			pathProps.target = path.target;
+			pathProps.download = path.download;
+		}
+
 		return (
-			<Path to={path} {...otherProps} />
+			<Path {...otherProps} {...pathProps} />
 		);
 	}
 }
