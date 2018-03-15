@@ -72,7 +72,7 @@ class Link extends React.Component {
 		delete props.replace;
 
 		if (isFullyResolved(to)) {
-			return (<Cmp {...props} onClick={this.handleClick} href={to} ref={innerRef} />)
+			return (<Cmp {...props} onClick={this.handleClick} href={to} ref={innerRef} />);
 		}
 
 		const { history } = this.context.router;
