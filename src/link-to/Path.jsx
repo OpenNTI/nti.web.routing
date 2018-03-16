@@ -161,7 +161,7 @@ export default class PathLink extends React.Component {
 		}
 
 		return activeClassName || activeStyle ?
-			(<NavLink {...props} to={path} onClick={this.onClick} className={cls} activeClassName={activeClassName} activeStyle={activeStyle} />) :
-			(<Link  {...props} to={path} onClick={this.onClick} className={cls} />);
+			(<NavLink {...props} to={path} className={cls} activeClassName={activeClassName} activeStyle={activeStyle} />) :
+			(<Link  {...props} to={path} className={cls} />);
 	}
 }
