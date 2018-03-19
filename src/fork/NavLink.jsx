@@ -45,7 +45,7 @@ export default function NavLink (props) {
 		isActive: getIsActive,
 		'aria-current': ariaCurrent,
 		...rest
-	} = this.props;
+	} = props;
 
 	const path = typeof to === 'object' ? to.pathname : to;
 	// Regex taken from: https://github.com/pillarjs/path-to-regexp/blob/master/index.js#L202
@@ -77,4 +77,3 @@ export default function NavLink (props) {
 		/>
 	);
 }
-
