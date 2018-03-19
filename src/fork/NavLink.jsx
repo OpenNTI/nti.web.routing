@@ -57,8 +57,8 @@ export default function NavLink (props) {
 			exact={exact}
 			strict={strict}
 			location={location}
-			//eslint-disable-next-line react/no-children-prop
-			children={({location:routeLocation, match}) => {
+		>
+			{({location:routeLocation, match}) => {
 				const isActive = !!(getIsActive ? getIsActive(match, routeLocation) : match);
 
 				return (
@@ -75,6 +75,6 @@ export default function NavLink (props) {
 					/>
 				);
 			}}
-		/>
+		</Route>
 	);
 }
