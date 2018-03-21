@@ -70,13 +70,17 @@ class Link extends React.Component {
 	};
 
 	render () {
-		const {to, innerRef, component:Cmp, ...props } = this.props;
+		const {to, innerRef, component, ...props } = this.props;
 
 		delete props.replace;
 
 		if (this.context.router.disabled) {
-			return (<span {...props} />);
+			const Cmp = component || 'span';
+
+			return (<Cmp {...props} />);
 		}
+
+		const Cmp = component || 'a';
 
 		if (isFullyResolved(to)) {
 			return (<Cmp {...props} onClick={this.handleClick} href={to} ref={innerRef} />);
