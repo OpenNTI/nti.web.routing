@@ -29,11 +29,12 @@ class Link extends React.Component {
 
 	static contextTypes = {
 		router: PropTypes.shape({
+			disabled: PropTypes.bool,
 			history: PropTypes.shape({
 				push: PropTypes.func.isRequired,
 				replace: PropTypes.func.isRequired,
 				createHref: PropTypes.func.isRequired
-			}).isRequired
+			})
 		}).isRequired
 	};
 
@@ -72,6 +73,10 @@ class Link extends React.Component {
 		const {to, innerRef, component:Cmp, ...props } = this.props;
 
 		delete props.replace;
+
+		if (this.context.router.disabled) {
+			return (<span {...props} />);
+		}
 
 		if (isFullyResolved(to)) {
 			return (<Cmp {...props} onClick={this.handleClick} href={to} ref={innerRef} />);
