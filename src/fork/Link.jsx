@@ -23,8 +23,7 @@ class Link extends React.Component {
 	};
 
 	static defaultProps = {
-		replace: false,
-		component: 'a'
+		replace: false
 	};
 
 	static contextTypes = {
@@ -75,7 +74,7 @@ class Link extends React.Component {
 		delete props.replace;
 
 		if (this.context.router.disabled) {
-			const Cmp = component || 'span';
+			const Cmp = component || 'div';
 
 			return (<Cmp {...props} />);
 		}
