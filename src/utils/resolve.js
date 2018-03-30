@@ -4,6 +4,8 @@ import {createPath, parsePath} from 'history';
 
 import isFullyResolved from './is-fully-resolved';
 
+const doesEndInSlash = RegExp.prototype.test.bind(/\/$/);
+
 function resolveLocation (base, location) {
 	const state = location;
 	const path = createPath(location);
@@ -16,7 +18,9 @@ function resolveLocation (base, location) {
 function resolvePath (base, path) {
 	if (isFullyResolved(path)) { return path; }
 
-	return resolve(base, path);
+	const resolved = resolve(base, path);
+
+	return !doesEndInSlash(resolved) && doesEndInSlash(path) ? (resolved + '/') : resolved;
 }
 
 export default function resolveRoute (base, path) {
