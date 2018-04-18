@@ -1,7 +1,7 @@
 import Path from 'path';
 
 import React from 'react';
-import {defineProtected} from 'nti-commons';
+import {defineProtected} from '@nti/lib-commons';
 
 import RouteWrapper from './RouteWrapper';
 import {getPartInfo} from './utils';

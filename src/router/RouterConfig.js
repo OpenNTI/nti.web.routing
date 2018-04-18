@@ -1,6 +1,6 @@
 import Path from 'path';
 
-import {defineProtected} from 'nti-commons';
+import {defineProtected} from '@nti/lib-commons';
 
 function getSubRoute (routes, args) {
 	for (let route of routes) {

@@ -1,5 +1,5 @@
 {
-  "name": "nti-web-routing",
+  "name": "@nti/web-routing",
   "version": "0.7.0-alpha",
   "description": "Nextthought utils for routing",
   "main": "./lib/index-cjs.js",
@@ -26,18 +26,18 @@
     "routing"
   ],
   "dependencies": {
+    "@nti/lib-ntiids": "^1.0.3",
+    "@nti/util-logger": "^1.2.0",
     "classnames": "^2.2.5",
     "history": "^4.7.2",
-    "nti-lib-ntiids": "^1.0.3",
-    "nti-util-logger": "^1.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
+    "nti-cmp-scripts": "^1.0.66",
+    "@nti/lib-commons": "^2.9.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "nti-cmp-scripts": "^1.0.66",
-    "nti-commons": "^2.9.0",
     "prop-types": "^15.6.0",
     "raf": "^3.4.0",
     "react": "^16.0.0",

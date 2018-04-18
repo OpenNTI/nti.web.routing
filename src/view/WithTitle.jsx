@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {buffer} from 'nti-commons';
+import {buffer} from '@nti/lib-commons';
 
 const SEPERATOR = ' - ';
 
