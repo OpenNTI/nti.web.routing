@@ -1,6 +1,6 @@
 {
   "name": "@nti/web-routing",
-  "version": "0.7.0-alpha",
+  "version": "0.7.0",
   "description": "Nextthought utils for routing",
   "main": "lib/index-cjs.js",
   "module": "lib/index.js",
