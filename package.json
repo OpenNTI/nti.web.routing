@@ -2,21 +2,21 @@
   "name": "@nti/web-routing",
   "version": "0.7.0-alpha",
   "description": "Nextthought utils for routing",
-  "main": "./lib/index-cjs.js",
-  "module": "./lib/index.js",
+  "main": "lib/index-cjs.js",
+  "module": "lib/index.js",
   "files": [
     "lib"
   ],
   "scripts": {
-    "test": "nti-cmp-scripts test",
-    "start": "nti-cmp-scripts start",
-    "prepack": "nti-cmp-scripts build",
-    "build": "nti-cmp-scripts build",
-    "clean": "nti-cmp-scripts clean",
-    "check": "nti-cmp-scripts check",
-    "release": "nti-cmp-scripts release",
-    "install-snapshots": "nti-cmp-scripts install-snapshots",
-    "fix": "nti-cmp-scripts fix"
+    "test": "cmp-scripts test",
+    "start": "cmp-scripts start",
+    "prepack": "cmp-scripts build",
+    "build": "cmp-scripts build",
+    "clean": "cmp-scripts clean",
+    "check": "cmp-scripts check",
+    "release": "cmp-scripts release",
+    "install-snapshots": "cmp-scripts install-snapshots",
+    "fix": "cmp-scripts fix"
   },
   "author": "NextThought",
   "license": "UNLICENSED",
@@ -34,7 +34,7 @@
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
-    "nti-cmp-scripts": "^1.0.66",
+    "@nti/cmp-scripts": "^1.16.0",
     "@nti/lib-commons": "^2.9.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
