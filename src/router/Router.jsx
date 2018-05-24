@@ -13,10 +13,10 @@ import RouterConfig from './RouterConfig';
 export default class Router extends React.Component {
 	/**
 	 * Create a Router component for a given set of routes
-	 * @param  {Array} routes    the list of routes to include in the router
-	 * @param  {Object} config   different configurations to control how the router works
-	 * @param {Component} frame  the component to render as a frame around the routes
-	 * @param {String} title     a title to use when the route is active
+	 * @param {Array} routes    the list of routes to include in the router
+	 * @param {Object} config   different configurations to control how the router works
+	 * @param {Component} config.frame  the component to render as a frame around the routes
+	 * @param {String} config.title     a title to use when the route is active
 	 * @return {Router}          Router component for given routes and config
 	 */
 	static for (routes, config) {
