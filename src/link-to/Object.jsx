@@ -29,6 +29,8 @@ export default class ObjectLink extends React.Component {
 		})
 	}
 
+	state = {path: '#'};
+
 	get router () {
 		return this.context.router || {};
 	}
@@ -39,23 +41,56 @@ export default class ObjectLink extends React.Component {
 		return router.getRouteFor;
 	}
 
-	getPathFor (object, context) {
+	componentDidMount () {
+		this.setupFor(this.props);
+	}
+
+	componentDidUpdate (prevProps) {
+		const {object:oldObject, context:oldContext} = prevProps;
+		const {object:newObject, context:newContext} = this.props;
+
+		if (oldObject !== newObject || oldContext !== newContext) {
+			this.setupFor(this.props);
+		}
+	}
+
+
+	setupFor (props) {
+		const {object, context} = props;
 		const {getRouteFor} = this;
 
 		if (typeof object === 'string' || !getRouteFor) { return ObjectLink.getPathFor(object); }
 
 		const path = getRouteFor(object, context);
 
-		return path || ObjectLink.getPathFor(object);
+		this.setState({
+			path: path || ObjectLink.getPathFor(object, context)
+		});
+	}
+
+
+	onClick = (e) => {
+		const {path} = this.state;
+
+		if (typeof path === 'function') {
+			path(e);
+			e.preventDefault();
+		}
 	}
 
 	render () {
-		const {object, context, ...otherProps} = this.props;
-		const path = this.getPathFor(object, context);
+		const { ...otherProps} = this.props;
+		const {path} = this.state;
+
+		delete otherProps.object;
+		delete otherProps.context;
 
 		let pathProps = {};
 
-		if (typeof path === 'string') {
+		if (typeof path === 'function') {
+			pathProps.to = '#';
+			pathProps.onClick = this.onClick;
+		} else if (typeof path === 'string') {
 			pathProps.to = path;
 		} else {
 			pathProps.to = path.href;

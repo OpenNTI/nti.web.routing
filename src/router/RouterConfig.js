@@ -35,6 +35,10 @@ export default class RouterConfig {
 	getRouteFor (basePath, ...args) {
 		const subRoute = getSubRoute(this.routes, args);
 
+		if (typeof subRoute === 'function') {
+			return subRoute;
+		}
+
 		return subRoute ? Path.join(basePath, subRoute) : null;
 	}
 }

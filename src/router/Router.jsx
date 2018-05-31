@@ -23,29 +23,31 @@ export default class Router extends React.Component {
 		const router = new RouterConfig(routes);
 		const {frame, title} = config || {};
 
-		InlineRouter.Router = router;
-		InlineRouter.propTypes = {
-			match: PropTypes.object,//if the router is being used as a component for another route, it will be given a match that we need to use
-			history: PropTypes.object,
-			location: PropTypes.object
+		return class InlineRouter extends React.Component {
+			static Router = router
+			static propTypes = {
+				match: PropTypes.object,//if the router is being used as a component for another route, it will be given a match that we need to use
+				history: PropTypes.object,
+				location: PropTypes.object
+			}
+
+
+			render () {
+				const {match, history, location, ...otherProps} = this.props;
+
+				return (
+					<Router
+						_router={router}
+						_routerProps={otherProps}
+						frame={frame}
+						title={title}
+						match={match}
+						history={history}
+						location={location}
+					/>
+				);
+			}
 		};
-		function InlineRouter (props) {
-			const {match, history, location, ...otherProps} = props;
-
-			return (
-				<Router
-					_router={router}
-					_routerProps={otherProps}
-					frame={frame}
-					title={title}
-					match={match}
-					history={history}
-					location={location}
-				/>
-			);
-		}
-
-		return InlineRouter;
 	}
 
 	static propTypes = {

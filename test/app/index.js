@@ -78,7 +78,9 @@ const Sub = Router.for([
 	Route({path: '/a', component: CmpA}),
 	Route({path: '/b', component: CmpB, getRouteFor: (obj) => {
 		if (obj.MimeType === TEST_MIME_TYPE) {
-			return '/b';
+			return () => {
+				alert('Object Clicked');
+			};
 		}
 	}}),
 	Route({path: '/', component: SubCmp, name: 'sub-root'})
