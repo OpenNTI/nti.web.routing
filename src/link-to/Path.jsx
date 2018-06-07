@@ -84,7 +84,8 @@ export default class PathLink extends React.Component {
 			linkTo: {
 				depth: parentLink ? parentLink.depth + 1 : 0,
 				activateSubLink: this.activateSubLink,
-				deactivateSubLink: this.deactivateSubLink
+				deactivateSubLink: this.deactivateSubLink,
+				isActiveSubLink: this.isActiveSubLink
 			}
 		};
 	}
@@ -97,6 +98,11 @@ export default class PathLink extends React.Component {
 	}
 
 
+	isActiveSubLink = (link) => {
+		return link && link === this.state.toOverride;
+	}
+
+
 	activateSubLink = (link) => {
 		this.setState({
 			toOverride: link
@@ -105,14 +111,21 @@ export default class PathLink extends React.Component {
 
 
 	deactivateSubLink = (link) => {
-		const {toOverride} = this.state;
-
-		if (link !== toOverride) {
+		if (!this.isActiveSubLink(link)) {
 			logger.warn('Deactivating a link that is not active...');
 		} else {
 			this.setState({
 				toOverride: null
 			});
+		}
+	}
+
+
+	componentWillUnmount () {
+		const {parentLink, to} = this;
+
+		if (parentLink && parentLink.isActiveSubLink && parentLink.isActiveSubLink(to)) {
+			parentLink.deactivateSubLink(to);
 		}
 	}
 
