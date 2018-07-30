@@ -14,7 +14,7 @@ function doReplace (history, href) {
 
 function doPush (history, href) {
 	if (isFullyResolved(href)) {
-		global.location.replace(href);
+		global.location.assign(href);
 	} else {
 		history.push(href);
 	}
