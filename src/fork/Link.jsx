@@ -4,6 +4,22 @@ import { createLocation } from 'history';
 
 import {isFullyResolved} from '../utils';
 
+function doReplace (history, href) {
+	if (isFullyResolved(href)) {
+		global.location.replace(href);
+	} else {
+		history.replace(href);
+	}
+}
+
+function doPush (history, href) {
+	if (isFullyResolved(href)) {
+		global.location.replace(href);
+	} else {
+		history.push(href);
+	}
+}
+
 const isModifiedEvent = event =>
 	!!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 
@@ -11,6 +27,21 @@ const isModifiedEvent = event =>
  * The public API for rendering a history-aware <a>.
  */
 class Link extends React.Component {
+	static routeTo (router, path) {
+		if (path.target === '_blank' || path.download) {
+			return window.open(path.href);
+		}
+
+		const isHref = typeof path === 'string';
+		const {history} = router;
+
+		if (!isHref && path.replace) {
+			return doReplace(history, path.href);
+		} else {
+			return doPush(history, path.href || path);
+		}
+	}
+
 	static propTypes = {
 		onClick: PropTypes.func,
 		target: PropTypes.string,
@@ -43,9 +74,6 @@ class Link extends React.Component {
 		const { history } = this.context.router;
 		const { replace, to, beforeNavigation } = this.props;
 
-		const doReplace = (href) => isFullyResolved(href) ? global.location.replace(href) : history.replace(href);
-		const doPush = (href) => isFullyResolved(href) ? global.location.assign(href) : history.push(href);
-
 		if (
 			!event.defaultPrevented && // onClick prevented default
 			event.button === 0 && // ignore everything but left clicks
@@ -61,9 +89,9 @@ class Link extends React.Component {
 			}
 
 			if (replace) {
-				doReplace(to);
+				doReplace(history, to);
 			} else {
-				doPush(to);
+				doPush(history, to);
 			}
 		}
 	};

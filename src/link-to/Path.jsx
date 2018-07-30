@@ -10,6 +10,10 @@ import NavLink from '../fork/NavLink';
 const logger = Logger.get('nti-web-routing:link-to:path');
 
 export default class PathLink extends React.Component {
+	static routeTo (router, path) {
+		return Link.routeTo(router, path);
+	}
+
 	static propTypes = {
 		to: PropTypes.oneOfType([
 			PropTypes.string,

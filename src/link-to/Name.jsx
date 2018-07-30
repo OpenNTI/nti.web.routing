@@ -3,7 +3,17 @@ import PropTypes from 'prop-types';
 
 import Path from './Path';
 
+function getPath (router, name, params) {
+	return router && router.getRouteFor ? (router.getRouteFor(name, params) || name) : name;
+}
+
 export default class NameLink extends React.Component {
+	static routeTo (router, name, params) {
+		const path = getPath(router, name, params);
+
+		return Path.routeTo(router, path);
+	}
+
 	static propTypes = {
 		name: PropTypes.string,
 		params: PropTypes.object
@@ -19,16 +29,10 @@ export default class NameLink extends React.Component {
 		return this.context.router || {};
 	}
 
-	get getRouteFor () {
+	getPathFor (name, params) {
 		const {router} = this;
 
-		return router.getRouteFor;
-	}
-
-	getPathFor (name, params) {
-		const {getRouteFor} = this;
-
-		return getRouteFor ? (getRouteFor(name, params) || name) : name;
+		return getPath(router, name, params);
 	}
 
 	render () {

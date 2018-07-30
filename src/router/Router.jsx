@@ -5,6 +5,7 @@ import {
 	Switch
 } from 'react-router-dom';
 
+import * as LinkTo from '../link-to';
 import {WithTitle} from '../view';
 
 import BrowserRouter from './BrowserRouter';
@@ -74,7 +75,12 @@ export default class Router extends React.Component {
 
 	static childContextTypes = {
 		router: PropTypes.shape({
-			getRouteFor: PropTypes.func
+			getRouteFor: PropTypes.func,
+			routeTo: PropTypes.shape({
+				name: PropTypes.func,
+				object: PropTypes.func,
+				path: PropTypes.func
+			})
 		})
 	}
 
@@ -83,7 +89,12 @@ export default class Router extends React.Component {
 			router: {
 				...this.context.router,
 				getRouteFor: (...args) => this.getRouteFor(...args),
-				baseroute: this.baseroute
+				baseroute: this.baseroute,
+				routeTo: {
+					name: (...args) => LinkTo.Name.routeTo(this, ...args),
+					object:  (...args) => LinkTo.Object.routeTo(this, ...args),
+					path: (...args) => LinkTo.Path.routeTo(this, ...args)
+				}
 			}
 		};
 	}

@@ -21,18 +21,53 @@ function Root () {
 	);
 }
 
-function CmpA () {
-	return (
-		<View.WithTitle title="Cmp A">
-			<div>
-				<LinkTo.Name name="root">Root</LinkTo.Name>
-				<LinkTo.Name name="sub-root">Sub Root</LinkTo.Name>
-				<LinkTo.Object object={{MimeType: TEST_MIME_TYPE}}>Object</LinkTo.Object>
+class CmpA extends React.Component {
+	static contextTypes = {
+		router: PropTypes.shape({
+			routeTo: PropTypes.shape({
+				object: PropTypes.func,
+				name: PropTypes.func
+			})
+		})
+	}
 
-				<h2>Nested A</h2>
-			</div>
-		</View.WithTitle>
-	);
+	gotoRoot = () => {
+		const {router} = this.context;
+
+		router.routeTo.name('root');
+	}
+
+
+	gotoSubRoot = () => {
+		const {router} = this.context;
+
+		router.routeTo.name('sub-root');
+	}
+
+
+	gotoObject = () => {
+		const {router} = this.context;
+
+		router.routeTo.object({MimeType: TEST_MIME_TYPE});
+	}
+
+
+	render () {
+		return (
+			<View.WithTitle title="Cmp A">
+				<div>
+					<LinkTo.Name name="root">Root</LinkTo.Name>
+					<LinkTo.Name name="sub-root">Sub Root</LinkTo.Name>
+					<LinkTo.Object object={{MimeType: TEST_MIME_TYPE}}>Object</LinkTo.Object>
+					<button onClick={this.gotoRoot}>Goto Root</button>
+					<button onClick={this.gotoSubRoot}>Goto Sub Root</button>
+					<button onClick={this.gotoObject}>Goto Object</button>
+
+					<h2>Nested A</h2>
+				</div>
+			</View.WithTitle>
+		);
+	}
 }
 
 

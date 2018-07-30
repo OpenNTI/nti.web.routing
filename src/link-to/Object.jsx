@@ -12,8 +12,30 @@ function getObjectURL (ntiid) {
 	return `/object/${encodeForURI(ntiid, true)}`;
 }
 
+function getPathForObject (obj) { return getObjectURL((!obj || typeof obj === 'string') ? obj : obj.NTIID); }
+
+function getPath (router, object, context) {
+	if (typeof object === 'string' || !router.getRouteFor || !router.getRouteFor) {
+		return getPathForObject(object);
+	}
+
+	const path = router.getRouteFor(object, context);
+
+	return path || getPathForObject(object);
+}
+
 export default class ObjectLink extends React.Component {
-	static getPathFor (obj) { return getObjectURL((!obj || typeof obj === 'string') ? obj : obj.NTIID); }
+	static getPathFor = getPathForObject
+
+	static routeTo (router, object, context) {
+		const path = getPath(router, object, context);
+
+		if (typeof path === 'function') {
+			return path();
+		}
+
+		return Path.routeTo(router, path);
+	}
 
 	static propTypes = {
 		object: PropTypes.oneOfType([
@@ -56,15 +78,10 @@ export default class ObjectLink extends React.Component {
 
 
 	setupFor (props) {
-		const {object, context} = props;
-		const {getRouteFor} = this;
-
-		if (typeof object === 'string' || !getRouteFor) { return ObjectLink.getPathFor(object); }
-
-		const path = getRouteFor(object, context);
+		const {object, context} = this.props;
 
 		this.setState({
-			path: path || ObjectLink.getPathFor(object, context)
+			path: getPath(this.router, object, context)
 		});
 	}
 
