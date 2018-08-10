@@ -171,6 +171,12 @@ export default class PathLink extends React.Component {
 			...otherProps
 		};
 
+		if (!this.context.router) {
+			return (
+				<div {...props} className={cls} />
+			);
+		}
+
 		if (this.parentLink) {
 			props.onMouseEnter = this.onMouseEnter;
 			props.onMouseLeave = this.onMouseLeave;
