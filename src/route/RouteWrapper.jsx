@@ -16,15 +16,34 @@ RouteWrapper.propTypes = {
 
 	frameless: PropTypes.bool
 };
-export default function RouteWrapper ({routeProps, routerProps, componentProps, component:Component, frame:Frame, frameless}) {
+export default function RouteWrapper ({routeProps, routerProps, componentProps, component, frame:Frame, frameless}) {
 	const params = getParamProps(routeProps);
-	const component = (<Component {...routeProps} {...routerProps} {...componentProps} {...params} />);
 
-	return isFrameless(Frame, frameless) ?
-		component :
-		(
-			<Frame {...routeProps} {...routerProps} {...params} frameless={frameless}>
-				{component}
-			</Frame>
-		);
+	const props = {
+		...routeProps,
+		...routerProps,
+		...componentProps,
+		...params,
+		component
+	};
+
+	return isFrameless(Frame, frameless) ? (
+		<Child {...props} />
+	) : (
+		<Frame {...routeProps} {...routerProps} {...params} frameless={frameless}>
+			<Child {...props} />
+		</Frame>
+	);
+}
+
+Child.propTypes = {
+	component: PropTypes.any
+};
+
+// Establishing this as its own component helps prevent umounting and remounting when parent props change,
+// and deferring instantiation avoids premature prop-type checks. (Frame might add required props via clone.)
+function Child ({component: Component, ...props}) {
+	return (
+		<Component {...props} />
+	);
 }
