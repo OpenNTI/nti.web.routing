@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {buffer} from '@nti/lib-commons';
 
-const SEPERATOR = ' - ';
+const SEPARATOR = ' - ';
 
 const updateTitle = buffer(300, (title) => {
 	if (typeof document !== 'undefined') {
@@ -40,7 +40,7 @@ export default class RouteViewWithTitle extends React.Component {
 		let fullTitle;
 
 		if (subTitle && title) {
-			fullTitle = `${subTitle}${SEPERATOR}${title}`;
+			fullTitle = `${subTitle}${SEPARATOR}${title}`;
 		} else if (subTitle) {
 			fullTitle = subTitle;
 		} else {
