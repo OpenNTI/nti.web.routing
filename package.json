@@ -2,10 +2,11 @@
   "name": "@nti/web-routing",
   "version": "0.12.0-alpha",
   "description": "Nextthought utils for routing",
-  "main": "lib/index-cjs.js",
-  "module": "lib/index.js",
+  "main": "lib/index.js",
+  "module": "src/index.js",
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "scripts": {
     "test": "cmp-scripts test",
@@ -34,7 +35,7 @@
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
-    "@nti/cmp-scripts": "^1.17.16",
+    "@nti/cmp-scripts": "^2.0.0",
     "@nti/lib-commons": "^2.9.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
