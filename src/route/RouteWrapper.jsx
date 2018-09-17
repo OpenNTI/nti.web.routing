@@ -6,7 +6,7 @@ import {getParamProps, isFrameless} from './utils';
 RouteWrapper.propTypes = {
 	routeProps: PropTypes.object,
 	componentProps: PropTypes.object,
-	routerProps: PropTypes.object,//extra props given to the router that we are passing a long
+	routerProps: PropTypes.object,//extra props given to the router that we are passing along
 
 	component: PropTypes.any,
 	frame: PropTypes.oneOfType([
