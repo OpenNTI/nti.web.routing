@@ -4,6 +4,7 @@ import {
 	Route,
 	Switch
 } from 'react-router-dom';
+import {PropTypes as PT} from '@nti/lib-commons';
 
 import * as LinkTo from '../link-to';
 import {WithTitle} from '../view';
@@ -56,10 +57,7 @@ export default class Router extends React.Component {
 		_routerProps: PropTypes.object,
 
 		title: PropTypes.string,
-		frame: PropTypes.oneOfType([
-			PropTypes.element,
-			PropTypes.func
-		]),
+		frame: PT.component,
 
 		match: PropTypes.object,
 		children: PropTypes.node

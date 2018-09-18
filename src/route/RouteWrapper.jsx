@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {PropTypes as PT} from '@nti/lib-commons';
 
 import {getParamProps, isFrameless} from './utils';
 
@@ -9,10 +10,7 @@ RouteWrapper.propTypes = {
 	routerProps: PropTypes.object,//extra props given to the router that we are passing along
 
 	component: PropTypes.any,
-	frame: PropTypes.oneOfType([
-		PropTypes.element,
-		PropTypes.func
-	]),
+	frame: PT.component,
 
 	frameless: PropTypes.bool
 };
