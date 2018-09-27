@@ -49,7 +49,7 @@ export default function NavLink (props) {
 
 	return (
 		<Route
-			path={typeof to === 'object' ? to.pathname : to}
+			path={decodeURI(typeof to === 'object' ? to.pathname : to)}
 			exact={exact}
 			strict={strict}
 			location={location}
