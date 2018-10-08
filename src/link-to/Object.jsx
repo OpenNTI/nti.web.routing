@@ -26,6 +26,7 @@ function getPath (router, object, context) {
 
 export default class ObjectLink extends React.Component {
 	static getPathFor = getPathForObject
+	static getPathWithRouter = getPath;
 
 	static routeTo (router, object, context) {
 		const path = getPath(router, object, context);

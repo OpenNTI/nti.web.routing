@@ -8,6 +8,7 @@ import {PropTypes as PT} from '@nti/lib-commons';
 
 import * as LinkTo from '../link-to';
 import {WithTitle} from '../view';
+import getHistory from '../history';
 
 import BrowserRouter from './BrowserRouter';
 import RouterConfig from './RouterConfig';
@@ -103,6 +104,10 @@ export default class Router extends React.Component {
 
 
 	get history () {
+		return this.providedHistory || getHistory();
+	}
+
+	get providedHistory () {
 		const {router} = this;
 
 		return router ? router.history : null;
@@ -142,12 +147,12 @@ export default class Router extends React.Component {
 
 	render () {
 		const {title} = this.props;
-		const {history} = this;
+		const {providedHistory} = this;
 
 		return (
 			<WithTitle title={title}>
 				{
-					history ?
+					providedHistory ?
 						this.renderRoutes() :
 						this.renderRouter()
 				}
