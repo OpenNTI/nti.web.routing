@@ -84,6 +84,7 @@ export default class Router extends React.Component {
 	}
 
 	getChildContext () {
+		//TODO: this needs to be updated to use the new react context
 		return {
 			router: {
 				...this.context.router,

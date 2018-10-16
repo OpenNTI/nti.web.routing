@@ -2,14 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 
-import {Router, LinkTo, Route, View} from '../../src';
+import {Router, LinkTo, Route, View, Prompt} from '../../src';
 
 const TEST_MIME_TYPE = 'test-mime-type';
+
+function confirmRootNavigation (cont, stop) {
+	const allow = window.confirm('Allow Navigation');
+
+	if (allow) {
+		cont();
+	} else {
+		stop();
+	}
+}
 
 function Root () {
 	return (
 		<View.WithTitle title="Cmp Root">
 			<div>
+				<Prompt when onRoute={confirmRootNavigation} />
 				<LinkTo.Path to="/sub">
 					Sub
 					<LinkTo.Path to="/sub/a">Sub/A</LinkTo.Path>
