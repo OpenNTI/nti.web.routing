@@ -19,6 +19,8 @@ NavLink.propTypes = {
 	activeStyle: PropTypes.object,
 	style: PropTypes.object,
 	isActive: PropTypes.func,
+	onActivate: PropTypes.func,
+	onDeactivate: PropTypes.func,
 	'aria-current': PropTypes.oneOf([
 		'page',
 		'step',
@@ -30,7 +32,9 @@ NavLink.propTypes = {
 };
 NavLink.defaultProps = {
 	activeClassName: 'active',
-	'aria-current': 'true'
+	'aria-current': 'true',
+	onActivate: () => {},
+	onDeactivate: () => {}
 };
 export default function NavLink (props) {
 	const {
@@ -42,10 +46,14 @@ export default function NavLink (props) {
 		className,
 		activeStyle,
 		style,
+		onActivate,
+		onDeactivate,
 		isActive: getIsActive,
 		'aria-current': ariaCurrent,
 		...rest
 	} = props;
+
+	let wasActive = false;
 
 	return (
 		<Route
@@ -56,6 +64,14 @@ export default function NavLink (props) {
 		>
 			{({location:routeLocation, match}) => {
 				const isActive = !!(getIsActive ? getIsActive(match, routeLocation) : match);
+
+				if (isActive && !wasActive) {
+					onActivate();
+				} else if (!isActive &&  wasActive) {
+					onDeactivate();
+				}
+
+				wasActive = isActive;
 
 				return (
 					<Link
