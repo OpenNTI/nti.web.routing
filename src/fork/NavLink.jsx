@@ -5,6 +5,7 @@ import {Route} from 'react-router-dom';
 
 import Link from './Link';
 
+let ACTIVE_MAP = {};
 
 /*
  * A <Link> wrapper that knows if it's "active" or not.
@@ -53,8 +54,6 @@ export default function NavLink (props) {
 		...rest
 	} = props;
 
-	let wasActive = false;
-
 	return (
 		<Route
 			path={decodeURI(typeof to === 'object' ? to.pathname : to)}
@@ -65,13 +64,20 @@ export default function NavLink (props) {
 			{({location:routeLocation, match}) => {
 				const isActive = !!(getIsActive ? getIsActive(match, routeLocation) : match);
 
+				let wasActive = ACTIVE_MAP[to];
+
 				if (isActive && !wasActive) {
 					onActivate();
 				} else if (!isActive &&  wasActive) {
 					onDeactivate();
 				}
 
-				wasActive = isActive;
+				if(!isActive) {
+					delete ACTIVE_MAP[to];
+				}
+				else {
+					ACTIVE_MAP[to] = isActive;
+				}
 
 				return (
 					<Link
