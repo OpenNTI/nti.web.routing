@@ -15,7 +15,7 @@ function getObjectURL (ntiid) {
 function getPathForObject (obj) { return getObjectURL((!obj || typeof obj === 'string') ? obj : obj.NTIID); }
 
 function getPath (router, object, context) {
-	if (typeof object === 'string' || !router.getRouteFor || !router.getRouteFor) {
+	if (typeof object === 'string' || !router.getRouteFor) {
 		return getPathForObject(object);
 	}
 
