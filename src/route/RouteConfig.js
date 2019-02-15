@@ -21,7 +21,6 @@ export default class RouteConfig {
 	 * @param {Object} config.component     the component to render, if the component statically defines Router  it will be used for config.Router
 	 * @param {Object} config.router        a sub router
 	 * @param {String} config.name          name to find the route by
-	 * @param {Boolean} config.frameless    breakout of the frame
 	 * @param {Object} config.props         extra props to pass to the component for the route
 	 * @param {Function} config.buildPathFor build the url
 	 * @param {Function} config.getRouteFor a method that takes an object and returns a route if it can handle showing it
@@ -38,8 +37,8 @@ export default class RouteConfig {
 		if (!config.path) { throw new Error('Cannot define a route without a path'); }
 	}
 
-	getRouteConfig (basepath, frame, routerProps) {
-		const {path, exact, strict, component, frameless, props:componentProps} = this.config || {};
+	getRouteConfig (basepath, hasFrame, routerProps) {
+		const {path, exact, strict, component, props:componentProps} = this.config || {};
 		const config = {
 			path: Path.join(basepath, path || ''),
 			exact,
@@ -48,7 +47,7 @@ export default class RouteConfig {
 
 		//Potential memory leak creating a function everytime, but I can't think of a way around it...
 		config.render = function InlineRouterWrapper (props) {
-			return React.createElement(RouteWrapper, {routeProps: props, component, frameless, frame, componentProps, routerProps });
+			return React.createElement(RouteWrapper, {routeProps: props, component, hasFrame, componentProps, routerProps });
 		};
 
 		return config;

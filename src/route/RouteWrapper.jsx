@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {PropTypes as PT} from '@nti/lib-commons';
 
-import {getParamProps, isFrameless} from './utils';
+import Frame from '../router/Frame';
+
+import {getParamProps} from './utils';
 
 RouteWrapper.propTypes = {
 	routeProps: PropTypes.object,
 	componentProps: PropTypes.object,
 	routerProps: PropTypes.object,//extra props given to the router that we are passing along
-
+	hasFrame: PropTypes.bool,
 	component: PropTypes.any,
-	frame: PT.component,
-
-	frameless: PropTypes.bool
 };
-export default function RouteWrapper ({routeProps, routerProps, componentProps, component, frame:Frame, frameless}) {
+export default function RouteWrapper ({routeProps, hasFrame, routerProps, componentProps, component}) {
 	const params = getParamProps(routeProps);
 
 	const props = {
@@ -25,13 +23,21 @@ export default function RouteWrapper ({routeProps, routerProps, componentProps, 
 		component
 	};
 
-	return isFrameless(Frame, frameless) ? (
-		<Child {...props} />
-	) : (
-		<Frame {...routeProps} {...routerProps} {...params} frameless={frameless}>
-			<Child {...props} />
-		</Frame>
-	);
+	if (hasFrame) {
+		return (
+			<Frame.Consumer>
+				{
+					({frameProps}) => {
+						return (
+							<Child {...props} {...frameProps} />
+						);
+					}
+				}
+			</Frame.Consumer>
+		);
+	}
+
+	return (<Child {...props} />);
 }
 
 Child.propTypes = {

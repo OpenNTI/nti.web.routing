@@ -10,8 +10,10 @@ import * as LinkTo from '../link-to';
 import {WithTitle} from '../view';
 import getHistory from '../history';
 
+import {getFrameProps} from './utils';
 import BrowserRouter from './BrowserRouter';
 import RouterConfig from './RouterConfig';
+import FrameWrapper from './Frame';
 
 export default class Router extends React.Component {
 	/**
@@ -174,24 +176,34 @@ export default class Router extends React.Component {
 
 
 	renderRoutes () {
-		const {_router, children} = this.props;
+		const {_router, _routerProps, children, frame: Frame} = this.props;
 
 		if (React.Children.count(children) > 0) {
 			return React.Children.only(children);
 		}
 
-		return (
+		const routes = (
 			<Switch>
 				{_router.map((route, index) => this.renderRoute(route, index))}
 			</Switch>
+		);
+
+		if (!Frame) { return routes; }
+
+		return (
+			<Frame {...getFrameProps(this.props)} {..._routerProps}>
+				<FrameWrapper>
+					{routes}
+				</FrameWrapper>
+			</Frame>
 		);
 	}
 
 
 	renderRoute (route, index) {
 		const {baseroute} = this;
-		const {frame, _routerProps} = this.props;
-		const config = route.getRouteConfig(baseroute, frame, _routerProps);
+		const {_routerProps, frame} = this.props;
+		const config = route.getRouteConfig(baseroute, !!frame, _routerProps);
 
 		return (
 			<Route key={index} {...config} />
