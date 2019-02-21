@@ -43,6 +43,7 @@ export default class ObjectLink extends React.Component {
 			PropTypes.object,
 			PropTypes.string
 		]),
+		onClick: PropTypes.func,
 		context: PropTypes.any
 	}
 
@@ -88,7 +89,12 @@ export default class ObjectLink extends React.Component {
 
 
 	onClick = (e) => {
+		const {onClick} = this.props;
 		const {path} = this.state;
+
+		if (onClick) {
+			onClick();
+		}
 
 		if (typeof path === 'function') {
 			path(e);
