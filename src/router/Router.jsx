@@ -14,8 +14,10 @@ import {getFrameProps} from './utils';
 import BrowserRouter from './BrowserRouter';
 import RouterConfig from './RouterConfig';
 import FrameWrapper from './Frame';
+import RouteForProvider from './RouteForProvider';
 
 export default class Router extends React.Component {
+	static RouteForProvider = RouteForProvider
 	/**
 	 * Create a Router component for a given set of routes
 	 * @param {Array} routes    the list of routes to include in the router
