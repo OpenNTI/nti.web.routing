@@ -121,6 +121,7 @@ export default class ObjectLink extends React.Component {
 			pathProps.replace = path.replace;
 			pathProps.target = path.target;
 			pathProps.download = path.download;
+			pathProps.onClick = path.onClick;
 		}
 
 		return (
