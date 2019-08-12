@@ -16,7 +16,8 @@ export default class NameLink extends React.Component {
 
 	static propTypes = {
 		name: PropTypes.string,
-		params: PropTypes.object
+		params: PropTypes.object,
+		as: PropTypes.any
 	}
 
 	static contextTypes = {
@@ -36,11 +37,12 @@ export default class NameLink extends React.Component {
 	}
 
 	render () {
-		const {name, params, ...otherProps} = this.props;
+		const {name, params, as: tag, ...otherProps} = this.props;
 		const path = this.getPathFor(name, params);
+		const Cmp = tag || Path;
 
 		return (
-			<Path to={path} {...otherProps} />
+			<Cmp to={path} {...otherProps} />
 		);
 	}
 }

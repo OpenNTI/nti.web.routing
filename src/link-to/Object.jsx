@@ -43,6 +43,7 @@ export default class ObjectLink extends React.Component {
 			PropTypes.object,
 			PropTypes.string
 		]),
+		as: PropTypes.any,
 		onClick: PropTypes.func,
 		context: PropTypes.any
 	}
@@ -103,7 +104,8 @@ export default class ObjectLink extends React.Component {
 	}
 
 	render () {
-		const { ...otherProps} = this.props;
+		const { as: tag, ...otherProps} = this.props;
+		const Cmp = tag || Path;
 		const {path} = this.state;
 
 		delete otherProps.object;
@@ -125,7 +127,7 @@ export default class ObjectLink extends React.Component {
 		}
 
 		return (
-			<Path {...otherProps} {...pathProps} />
+			<Cmp {...otherProps} {...pathProps} />
 		);
 	}
 }
