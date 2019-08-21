@@ -41,7 +41,7 @@ export default class RouteForProvider extends React.Component {
 		const {getRouteFor} = this.props;
 		const {parentGetRouteFor} = this;
 
-		const route = getRouteFor && getRouteFor(...args);
+		const route = getRouteFor && getRouteFor(...args, this.router);
 
 		return route || (parentGetRouteFor && parentGetRouteFor(...args));
 	}
