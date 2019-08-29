@@ -4,6 +4,8 @@ import { createLocation } from 'history';
 
 import {isFullyResolved} from '../utils';
 
+import createLocationPatch from './create-location-patched';
+
 function doReplace (history, href) {
 	if (isFullyResolved(href)) {
 		global.location.replace(href);
@@ -50,7 +52,9 @@ class Link extends React.Component {
 		to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 		innerRef: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 		component: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-		beforeNavigation: PropTypes.func
+		beforeNavigation: PropTypes.func,
+
+		noPathFix: PropTypes.bool
 	};
 
 	static defaultProps = {
@@ -97,7 +101,7 @@ class Link extends React.Component {
 	};
 
 	render () {
-		const {to, innerRef, component, ...props } = this.props;
+		const {to, innerRef, component, noPathFix, ...props } = this.props;
 
 		delete props.replace;
 
@@ -116,7 +120,7 @@ class Link extends React.Component {
 		const { history } = this.context.router;
 		const location =
 			typeof to === 'string'
-				? createLocation(to, null, null, history.location)
+				? (noPathFix ? createLocationPatch(to, null, null, history.location) : createLocation(to, null, null, history.location))
 				: to;
 
 		const href = history.createHref(location);
