@@ -10,7 +10,8 @@ const FrameContext = React.createContext({frameProps: {}});
  */
 
 export default class NTIRouterFrame extends React.Component {
-	static Consumer = FrameContext.Consumer
+	static Context = FrameContext;
+	static Consumer = FrameContext.Consumer;
 
 	static propTypes = {
 		children: PropTypes.any

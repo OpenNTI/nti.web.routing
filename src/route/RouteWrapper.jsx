@@ -13,6 +13,7 @@ RouteWrapper.propTypes = {
 	component: PropTypes.any,
 };
 export default function RouteWrapper ({routeProps, hasFrame, routerProps, componentProps, component}) {
+	const {frameProps} = React.useContext(Frame.Context); 
 	const params = getParamProps(routeProps);
 
 	const props = {
@@ -24,17 +25,7 @@ export default function RouteWrapper ({routeProps, hasFrame, routerProps, compon
 	};
 
 	if (hasFrame) {
-		return (
-			<Frame.Consumer>
-				{
-					({frameProps}) => {
-						return (
-							<Child {...props} {...frameProps} />
-						);
-					}
-				}
-			</Frame.Consumer>
-		);
+		return (<Child {...props} {...frameProps} />);
 	}
 
 	return (<Child {...props} />);
