@@ -7,6 +7,9 @@ import isFullyResolved from './is-fully-resolved';
 const doesEndInSlash = RegExp.prototype.test.bind(/\/$/);
 
 function resolveLocation (base, location) {
+	if(location == null) {
+		return null;
+	}
 	const state = location;
 	const path = createPath(location);
 	const resolvedPath = resolvePath(base, path);
