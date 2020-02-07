@@ -49,7 +49,7 @@ class Link extends React.Component {
 		target: PropTypes.string,
 		replace: PropTypes.bool,
 		download: PropTypes.bool,
-		to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+		to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 		innerRef: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 		component: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 		beforeNavigation: PropTypes.func,
