@@ -44,13 +44,12 @@ describe('Link', () => {
 		beforeEach(() => {
 			jest.resetAllMocks();
 
+			delete global.location;
 			global.location = {
-				replace: () => {},
-				assign: () => {}
+				replace: jest.fn(),
+				assign: jest.fn()
 			};
 
-			jest.spyOn(global.location, 'assign');
-			jest.spyOn(global.location, 'replace');
 			jest.spyOn(history, 'push').mockImplementation(() => {});
 			jest.spyOn(history, 'replace').mockImplementation(() => {});
 		});
