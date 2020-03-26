@@ -4,7 +4,7 @@ import React from 'react';
 import {defineProtected} from '@nti/lib-commons';
 
 import RouteWrapper from './RouteWrapper';
-import {getPartInfo} from './utils';
+import {getPartInfo, escapeBasepath} from './utils';
 
 const HAS_PARAMS = /:/g;
 
@@ -40,7 +40,7 @@ export default class RouteConfig {
 	getRouteConfig (basepath, hasFrame, routerProps) {
 		const {path, exact, strict, component, props:componentProps} = this.config || {};
 		const config = {
-			path: Path.join(basepath, path || ''),
+			path: Path.join(escapeBasepath(basepath), path || ''),
 			exact,
 			strict
 		};
