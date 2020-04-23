@@ -94,10 +94,10 @@ export default class ObjectLink extends React.Component {
 		const {path} = this.state;
 
 		if (onClick) {
-			onClick();
+			onClick(e);
 		}
 
-		if (typeof path === 'function') {
+		if (typeof path === 'function' && !e.defaultPrevented) {
 			path(e);
 			e.preventDefault();
 		}
