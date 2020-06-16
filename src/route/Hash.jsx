@@ -1,9 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+function doesMatch (hash, match) {
+	if (typeof match === 'string') { return hash === match; }
+	if (typeof match === 'function') { return match(hash); }
+}
+
 export default class HashRoute extends React.Component  {
 	static propTypes = {
-		matches: PropTypes.string.isRequired,
+		matches: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.func
+		]).isRequired,
 		render: PropTypes.func.isRequired
 	}
 
@@ -45,6 +53,6 @@ export default class HashRoute extends React.Component  {
 	render () {
 		const {matches, render} = this.props;
 
-		return this.hash === matches ? render(this.hash, this.setHash) : null;
+		return doesMatch(this.hash, matches) ? render(this.hash, this.setHash) : null;
 	}
 }
