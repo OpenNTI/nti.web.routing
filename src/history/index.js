@@ -29,9 +29,5 @@ export default function getHistory () {
 		};
 	}
 
-	history = history || createBrowserHistory({
-		getUserConfirmation
-	});
-
 	return history;
 }
