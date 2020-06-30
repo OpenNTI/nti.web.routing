@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Frame from '../router/Frame';
+import Context from '../router/Context';
 
 import {getParamProps} from './utils';
 
@@ -39,6 +40,8 @@ Child.propTypes = {
 // and deferring instantiation avoids premature prop-type checks. (Frame might add required props via clone.)
 function Child ({component: Component, ...props}) {
 	return (
-		<Component {...props} />
+		<Context>
+			<Component {...props} />
+		</Context>
 	);
 }
