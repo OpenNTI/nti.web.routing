@@ -17,9 +17,14 @@ import RouterConfig from './RouterConfig';
 import FrameWrapper from './Frame';
 import RouteForProvider from './RouteForProvider';
 
+let globalGetRouteFor = null;
+
 export default class Router extends React.Component {
 	static RouteForProvider = RouteForProvider;
 	static useRouter = Context.useRouter;
+	static setGlobalGetRouteFor (getRouteFor) {
+		globalGetRouteFor = getRouteFor;
+	}
 
 	/**
 	 * Create a Router component for a given set of routes
@@ -149,7 +154,7 @@ export default class Router extends React.Component {
 
 		const route = _router.getRouteFor(baseroute, ...args);
 
-		return route || (parentGetRouteFor && parentGetRouteFor(...args));
+		return route || (parentGetRouteFor && parentGetRouteFor(...args)) || (globalGetRouteFor && globalGetRouteFor(...args));
 	}
 
 
