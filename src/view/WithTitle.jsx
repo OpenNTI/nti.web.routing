@@ -71,9 +71,9 @@ export default class RouteViewWithTitle extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {title:newTitle} = nextProps;
-		const {title:oldTitle} = this.props;
+	componentDidUpdate (prevProps) {
+		const {title:newTitle} = this.props;
+		const {title:oldTitle} = prevProps;
 
 		if (newTitle !== oldTitle) {
 			this.setTitle(newTitle, this.subTitle);
