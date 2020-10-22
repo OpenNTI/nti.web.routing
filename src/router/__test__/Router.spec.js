@@ -1,6 +1,8 @@
 /* eslint-env jest */
 import React from 'react';
+import PropTypes from 'prop-types';
 import {shallow, mount} from 'enzyme';
+import { __RouterContext as RouterContext } from 'react-router';
 
 import BrowserRouter from '../BrowserRouter';
 import Router from '../Router';
@@ -74,8 +76,18 @@ describe('Router', () => {
 		});
 
 		test('does not render BrowserRouter if history in context', () => {
-			const routerCmp = mount(<Router _router={new RouterConfig([])} />, {
-				context: {router: {history: {}, route: {}, createHref () {}}}
+			const router = {history: {}, route: {}, getRouteFor () {}, createHref () {}};
+			const routerCmp = mount((
+				<RouterContext.Provider value={router}>
+					<Router _router={new RouterConfig([])} />
+				</RouterContext.Provider>
+			), {
+				childContextTypes: {
+					router: PropTypes.any,
+				},
+				context: {
+					router
+				}
 			});
 			const browserRouter = routerCmp.find(BrowserRouter);
 

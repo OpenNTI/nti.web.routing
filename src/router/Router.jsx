@@ -158,14 +158,13 @@ export default class Router extends React.Component {
 
 	render () {
 		const {title} = this.props;
-		const {providedHistory} = this;
 
 		return (
 			<WithTitle title={title}>
 				{
-					providedHistory ?
-						this.renderRoutes() :
-						this.renderRouter()
+					this.providedHistory
+						? this.renderRoutes()
+						: this.renderRouter()
 				}
 			</WithTitle>
 		);
