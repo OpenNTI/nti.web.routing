@@ -1,63 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Router from '../router';
+import getHistory from '../history';
+
 import {addPrompt} from './Store';
 
-class RouterPromptInner extends React.Component {
-	static propTypes = {
-		onRoute: PropTypes.func.isRequired
-	}
+RouterPromptInner.propTypes = {
+	onRoute: PropTypes.func
+};
+function RouterPromptInner ({onRoute}) {
+	const router = Router.useRouter();
 
-	static contextTypes = {
-		router: PropTypes.shape({
-			history: PropTypes.object
-		}).isRequired
-	}
+	React.useEffect(() => {
+		const history = router?.history ?? getHistory();
 
-	get history () {
-		return this.context.router.history;
-	}
+		return addPrompt(onRoute, history);
+	},[router, onRoute]);
 
-	componentDidMount () {
-		const {onRoute} = this.props;
-
-		this.release = addPrompt(onRoute, this.history);
-	}
-
-
-	componentWillUnmount () {
-		this.release();
-	}
-
-
-	componentDidUpdate (prevProps) {
-		const {onRoute} = this.props;
-		const {onRoute:prevOnRoute} = prevProps;
-
-		if (onRoute !== prevOnRoute) {
-			this.release();
-			this.release = addPrompt(onRoute, this.history);
-		}
-	}
-
-	render () {
-		return null;
-	}
+	return null;
 }
 
-export default class RouterPrompt extends React.Component {
-	static propTypes = {
-		when: PropTypes.bool
-	}
+RouterPrompt.propTypes = {
+	when: PropTypes.bool
+};
+export default function RouterPrompt ({when, ...otherProps}) {
+	if (!when) { return null; }
 
-
-	render () {
-		const {when, ...otherProps} = this.props;
-
-		if (!when) { return null; }
-
-		return (
-			<RouterPromptInner {...otherProps} />
-		);
-	}
+	return (
+		<RouterPromptInner {...otherProps} />
+	);
 }
+
