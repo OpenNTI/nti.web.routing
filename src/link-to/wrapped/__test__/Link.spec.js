@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {mount} from 'enzyme';
 
-import getHistory from '../../history';
+import getHistory from '../../../history';
 import Link from '../Link';
 
 const history = getHistory();

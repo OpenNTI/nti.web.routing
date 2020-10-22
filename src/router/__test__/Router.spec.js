@@ -75,7 +75,7 @@ describe('Router', () => {
 
 		test('does not render BrowserRouter if history in context', () => {
 			const routerCmp = mount(<Router _router={new RouterConfig([])} />, {
-				context: {router: {history: {}, route: {}}}
+				context: {router: {history: {}, route: {}, createHref () {}}}
 			});
 			const browserRouter = routerCmp.find(BrowserRouter);
 

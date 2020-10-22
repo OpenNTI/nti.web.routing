@@ -27,9 +27,9 @@
     "@nti/lib-ntiids": "NextThought/nti.lib.ntiids",
     "@nti/util-logger": "NextThought/nti.util.logger",
     "classnames": "^2.2.5",
-    "history": "^4.7.2",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2"
+    "history": "^4.10.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
     "@nti/cmp-scripts": "^2.0.0",

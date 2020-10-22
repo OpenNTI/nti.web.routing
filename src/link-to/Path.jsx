@@ -5,8 +5,9 @@ import cx from 'classnames';
 import Logger from '@nti/util-logger';
 
 import {resolve} from '../utils';
-import Link from '../fork/Link';
-import NavLink from '../fork/NavLink';
+
+import {Link, NavLink} from './wrapped';
+
 
 const logger = Logger.get('nti-web-routing:link-to:path');
 

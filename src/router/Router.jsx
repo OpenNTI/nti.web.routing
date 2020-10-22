@@ -128,9 +128,7 @@ export default class Router extends React.Component {
 
 
 	get route () {
-		const {router} = this;
-
-		return router ? router.route : null;
+		return this.router?.route || null;
 	}
 
 
@@ -192,18 +190,18 @@ export default class Router extends React.Component {
 			return React.Children.only(children);
 		}
 
-		const routes = (
+		const routes = () => (
 			<Switch>
 				{_router.map((route, index) => this.renderRoute(route, index))}
 			</Switch>
 		);
 
-		if (!Frame) { return routes; }
+		if (!Frame) { return routes(); }
 
 		return (
 			<Frame {...getFrameProps(this.props)} {..._routerProps}>
 				<FrameWrapper>
-					{routes}
+					{routes()}
 				</FrameWrapper>
 			</Frame>
 		);
