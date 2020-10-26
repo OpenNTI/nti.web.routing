@@ -12,14 +12,13 @@ import routeTo, { topLevelNavigate } from './route-to';
  * The public API for rendering a history-aware <a>.
  */
 const WrappedLink = ({component: as, ...props}, legacyContext) => {
+	const maybeTopNav = useCallback(() => topLevelNavigate(props.to, props.replace), [props.to, props.replace]);
 	const context = useContext(RouterContext);
 
 	if (legacyContext.router?.disabled) {
 		const Cmp = as || 'div';
 		return (<Cmp {...props} />);
 	}
-
-	const maybeTopNav = useCallback(() => topLevelNavigate(props.to, props.replace), [props.to, props.replace]);
 
 	return (
 		<RouterContext.Provider value={context || legacyContext.router}>
