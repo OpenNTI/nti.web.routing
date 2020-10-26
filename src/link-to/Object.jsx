@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {encodeForURI} from '@nti/lib-ntiids';
+import {resolveBasePath} from '@nti/web-client';
 
 import Path from './Path';
+
+global.getObjectURL = getObjectURL;
 
 function getObjectURL (ntiid) {
 	if (!ntiid) {
 		return '#';
 	}
 
-	return `/object/${encodeForURI(ntiid, true)}`;
+	return `${resolveBasePath()}object/${encodeForURI(ntiid, true)}`;
 }
 
 function getPathForObject (obj) { return getObjectURL((!obj || typeof obj === 'string') ? obj : obj.NTIID); }
