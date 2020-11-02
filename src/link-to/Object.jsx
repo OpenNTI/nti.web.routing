@@ -5,8 +5,6 @@ import {resolveBasePath} from '@nti/web-client';
 
 import Path from './Path';
 
-global.getObjectURL = getObjectURL;
-
 function getObjectURL (ntiid) {
 	if (!ntiid) {
 		return '#';
