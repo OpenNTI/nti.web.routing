@@ -1,6 +1,7 @@
 import {resolve} from 'path';
 
 import {createPath, parsePath} from 'history';
+import {getConfig} from '@nti/web-client';
 
 import isFullyResolved from './is-fully-resolved';
 
@@ -27,5 +28,6 @@ function resolvePath (base, path) {
 }
 
 export default function resolveRoute (base, path) {
-	return typeof path === 'string' ? resolvePath(base, path) : resolveLocation(base, path);
+	const result = typeof path === 'string' ? resolvePath(base, path) : resolveLocation(base, path);
+	return getConfig('overrides.routes')[result] || result;
 }
