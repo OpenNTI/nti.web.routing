@@ -3,7 +3,7 @@ import {resolve} from 'path';
 import {createPath, parsePath} from 'history';
 import {getConfig} from '@nti/web-client';
 
-import isFullyResolved from './is-fully-resolved';
+import {isFullyResolved} from './is-fully-resolved';
 
 const doesEndInSlash = RegExp.prototype.test.bind(/\/$/);
 
@@ -27,7 +27,7 @@ function resolvePath (base, path) {
 	return !doesEndInSlash(resolved) && doesEndInSlash(path) ? (resolved + '/') : resolved;
 }
 
-export default function resolveRoute (base, path) {
+export function resolveRoute (base, path) {
 	const result = typeof path === 'string' ? resolvePath(base, path) : resolveLocation(base, path);
 	return getConfig('overrides.routes')[result] || result;
 }

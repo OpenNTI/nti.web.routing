@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import resolve from '../resolve';
+import {resolveRoute as resolve} from '../resolve';
 
 describe('resolve', () => {
 	test('path is a string', () => {

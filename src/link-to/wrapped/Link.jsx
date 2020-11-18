@@ -20,6 +20,11 @@ const WrappedLink = ({component: as, ...props}, legacyContext) => {
 		return (<Cmp {...props} />);
 	}
 
+	if (!props.to && props.href) {
+		const Cmp = as || 'a';
+		return <Cmp {...props}/>;
+	}
+
 	return (
 		<RouterContext.Provider value={context || legacyContext.router}>
 			<Link {...props}
@@ -43,6 +48,20 @@ WrappedLink.contextTypes = {
 
 WrappedLink.propTypes = {
 	...Link.propTypes,
+	to: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.object,
+		PropTypes.func
+	]),
+	href (props) {
+		if (props.to && props.href) {
+			return new Error('Should not supply href AND to props to WrappedLink');
+		}
+
+		if (props.href != null && typeof props.href !== 'string' || props.href === '') {
+			return new Error('href should be a non-empty string');
+		}
+	},
 	download: PropTypes.bool,
 	beforeNavigation: PropTypes.func,
 };

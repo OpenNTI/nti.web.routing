@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Logger from '@nti/util-logger';
 
-import {resolve} from '../utils';
+import {isExternal, resolveRoute} from '../utils';
 
 import {Link, NavLink} from './wrapped';
 
@@ -166,17 +166,24 @@ export default class PathLink extends React.Component {
 
 	render () {
 		const {className, activeClassName, activeStyle, ...otherProps} = this.props;
-		const path = resolve(this.baseroute, this.to);
-		const cls = cx('nti-link-to-path', className);
+		const path = resolveRoute(this.baseroute, this.to);
 
 		const props = {
-			...otherProps
+			...otherProps,
+			className: cx('nti-link-to-path', className),
 		};
 
 		if (!this.context.router) {
 			return (
-				<div {...props} className={cls} />
+				<div {...props} />
 			);
+		}
+
+		if (isExternal(path, this.baseroute)) {
+			delete props.to;
+			props.href = path;
+		} else {
+			props.to = path;
 		}
 
 		if (this.parentLink) {
@@ -186,7 +193,7 @@ export default class PathLink extends React.Component {
 		}
 
 		return activeClassName || activeStyle ?
-			(<NavLink {...props} to={path} className={cls} activeClassName={activeClassName} activeStyle={activeStyle} />) :
-			(<Link  {...props} to={path} className={cls} />);
+			(<NavLink {...props} activeClassName={activeClassName} activeStyle={activeStyle} />) :
+			(<Link  {...props} />);
 	}
 }

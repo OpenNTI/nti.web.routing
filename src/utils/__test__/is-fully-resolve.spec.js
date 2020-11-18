@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import isFullyResolved from '../is-fully-resolved.js';
+import {isFullyResolved} from '../is-fully-resolved.js';
 
 describe('isFullyResolved', () => {
 	test('Has Protocol', () => {

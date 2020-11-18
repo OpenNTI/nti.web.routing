@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 
-import {resolve} from '../utils';
+import {resolveRoute} from '../utils';
 
 export default class PathRedirect extends React.Component {
 	static propTypes = {
@@ -30,7 +30,7 @@ export default class PathRedirect extends React.Component {
 
 	render () {
 		const {to, ...otherProps} = this.props;
-		const path = resolve(this.baseroute, to);
+		const path = resolveRoute(this.baseroute, to);
 
 		return (
 			<Redirect to={path} {...otherProps} />

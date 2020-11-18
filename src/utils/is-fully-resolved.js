@@ -1,7 +1,7 @@
 const PROTOCOL_LESS = /^\/\/.*/;//starts with //
 const NULL_PROTO = 'x:';
 
-export default function isFullyResolved (part) {
+export function isFullyResolved (part) {
 	if (part == null) {
 		return true;
 	}
