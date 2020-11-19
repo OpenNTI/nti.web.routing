@@ -82,8 +82,8 @@ export default class PathLink extends React.Component {
 	getChildContext () {
 		const {parentLink} = this;
 
-		if (parentLink && parentLink.depth > 0) {
-			logger.warn('Nested Links more than one level deep might have some weird behaviors');
+		if (parentLink && parentLink.depth > 1) {
+			logger.debug('Nested Links more than one level deep might have some weird behaviors');
 		}
 
 		return {
