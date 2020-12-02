@@ -10,7 +10,7 @@ function getObjectURL (ntiid) {
 		return '#';
 	}
 
-	return `${resolveBasePath()}object/${encodeForURI(ntiid, true)}`;
+	return `${resolveBasePath()}id/${encodeForURI(ntiid, true)}`;
 }
 
 function getPathForObject (obj) { return getObjectURL((!obj || typeof obj === 'string') ? obj : obj.NTIID); }
