@@ -27,7 +27,7 @@
     "@nti/lib-ntiids": "NextThought/nti.lib.ntiids",
     "@nti/util-logger": "NextThought/nti.util.logger",
     "@nti/web-client": "NextThought/nti.web.client",
-    "history": "^4.10.1",
+    "history": "^5.0.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
   },
