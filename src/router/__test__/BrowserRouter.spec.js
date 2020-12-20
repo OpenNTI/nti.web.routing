@@ -1,7 +1,8 @@
 /* eslint-env jest */
 import React from 'react';
 import {Router} from 'react-router-dom';
-import {mount} from 'enzyme';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import TestRenderer from 'react-test-renderer';
 
 import BrowserRouter from '../BrowserRouter';
 import getHistory from '../../history';
@@ -10,9 +11,9 @@ const history = getHistory();
 
 describe('BrowserRouter', () => {
 	test('passes the history instance to the router', () => {
-		const browserRouter = mount((<BrowserRouter />));
-		const router = browserRouter.find(Router);
+		const {root} = TestRenderer.create((<BrowserRouter />));
+		const router = root.findByType(Router);
 
-		expect(router.prop('history')).toEqual(history);
+		expect(router.props.history).toEqual(history);
 	});
 });

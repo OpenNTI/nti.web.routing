@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {mount} from 'enzyme';
+import { render, fireEvent } from '@testing-library/react';
 
 import getHistory from '../../../history';
 import Link from '../Link';
@@ -34,9 +34,10 @@ function renderLink (props) {
 		}
 	}
 
-	const render = mount((<Wrapper><Link {...props} /></Wrapper>));
+	let link;
+	render((<Wrapper><Link ref={x => link = x} {...props} /></Wrapper>));
 
-	return render.find(Link);
+	return link;
 }
 
 describe('Link', () => {
@@ -57,7 +58,7 @@ describe('Link', () => {
 		test('push fully resolved url', () => {
 			const link = renderLink({to: 'http://www.google.com'});
 
-			link.simulate('click', getClickEvent());
+			fireEvent.click(link, getClickEvent());
 
 			expect(global.location.assign).toHaveBeenCalledWith('http://www.google.com');
 			expect(global.location.replace).not.toHaveBeenCalled();
@@ -69,7 +70,7 @@ describe('Link', () => {
 		test('replace fully resolved url', () => {
 			const link = renderLink({to: 'http://www.google.com', replace: true});
 
-			link.simulate('click', getClickEvent());
+			fireEvent.click(link, getClickEvent());
 
 			expect(global.location.assign).not.toHaveBeenCalled();
 			expect(global.location.replace).toHaveBeenCalledWith('http://www.google.com');
@@ -81,7 +82,7 @@ describe('Link', () => {
 		test('push relative url', () => {
 			const link = renderLink({to: '/foo/bar'});
 
-			link.simulate('click', getClickEvent());
+			fireEvent.click(link, getClickEvent());
 
 			expect(global.location.assign).not.toHaveBeenCalled();
 			expect(global.location.replace).not.toHaveBeenCalled();
@@ -93,7 +94,7 @@ describe('Link', () => {
 		test('replace relative url', () => {
 			const link = renderLink({to: '/foo/bar', replace: true});
 
-			link.simulate('click', getClickEvent());
+			fireEvent.click(link, getClickEvent());
 
 			expect(global.location.assign).not.toHaveBeenCalled();
 			expect(global.location.replace).not.toHaveBeenCalled();
@@ -105,7 +106,7 @@ describe('Link', () => {
 		test('download', () => {
 			const link = renderLink({to: '/document.pdf', download: true});
 
-			link.simulate('click', getClickEvent());
+			fireEvent.click(link, getClickEvent());
 
 			expect(global.location.assign).not.toHaveBeenCalled();
 			expect(global.location.replace).not.toHaveBeenCalled();

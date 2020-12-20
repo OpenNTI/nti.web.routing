@@ -1,50 +1,51 @@
 /* eslint-disable no-unused-vars */
 import React, { useCallback, useContext } from 'react';
-import PropTypes from 'prop-types';
-import { __RouterContext as RouterContext } from 'react-router';
+import PropTypes, { func } from 'prop-types';
 import {Link} from 'react-router-dom';
+
+import { ContextMerger } from '../../router/utils/context-merger';
 
 import NestableAnchor from './NestableAnchor';
 import routeTo, { topLevelNavigate } from './route-to';
 
 
+
 /*
  * The public API for rendering a history-aware <a>.
  */
-const WrappedLink = ({component: as, ...props}, legacyContext) => {
+const WrappedLink = React.forwardRef(({component: as, ...props}, ref) => {
 	const maybeTopNav = useCallback(() => topLevelNavigate(props.to, props.replace), [props.to, props.replace]);
-	const context = useContext(RouterContext);
-
-	if (legacyContext.router?.disabled) {
-		const Cmp = as || 'div';
-		return (<Cmp {...props} />);
-	}
-
-	if (!props.to && props.href) {
-		const Cmp = as || 'a';
-		return <Cmp {...props}/>;
-	}
-
 	return (
-		<RouterContext.Provider value={context || legacyContext.router}>
-			<Link {...props}
-				as={as}
-				component={NestableAnchor}
-				_maybeNavigateTop={maybeTopNav}
-			/>
-		</RouterContext.Provider>
+		<ContextMerger>
+			{(context) => {
+				if (context?.disabled) {
+					const Cmp = as || 'div';
+					return (<Cmp {...props} />);
+				}
+
+				if (!props.to && props.href) {
+					const Cmp = as || 'a';
+					return <Cmp {...props}/>;
+				}
+
+				return (
+
+					<Link {...props}
+						ref={ref}
+						as={as}
+						component={NestableAnchor}
+						_maybeNavigateTop={maybeTopNav}
+					/>
+
+				);
+			}}
+		</ContextMerger>
 	);
-};
+});
 
 WrappedLink.displayName = 'WrappedLink';
 
 WrappedLink.routeTo = routeTo;
-
-WrappedLink.contextTypes = {
-	router: PropTypes.shape({
-		disabled: PropTypes.bool
-	})
-};
 
 WrappedLink.propTypes = {
 	...Link.propTypes,

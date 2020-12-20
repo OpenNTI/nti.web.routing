@@ -1,97 +1,113 @@
 /* eslint-env jest */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {shallow, mount} from 'enzyme';
-import { __RouterContext as RouterContext } from 'react-router';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import TestRenderer from 'react-test-renderer';
 
 import BrowserRouter from '../BrowserRouter';
 import Router from '../Router';
 import RouterConfig from '../RouterConfig';
 import {WithTitle} from '../../view/';
+import {ContextMerger} from '../utils/context-merger';
+
+function inject (value) {
+	return class ContextInjector extends React.Component {
+		static childContextTypes = {
+			router: PropTypes.any,
+		}
+
+		getChildContext () {
+			return {
+				router: value
+			};
+		}
+
+		render () {
+			return (
+				<ContextMerger>{() => this.props.children}</ContextMerger>
+			);
+		}
+	};
+}
+
+const mockInterface = (route) => ({
+	...route,
+	getRouteConfig: () => {}
+});
+
 
 describe('Router', () => {
 	describe('.for', () => {
-		const routes = [{name: 'route1'}, {name: 'route2'}];
+		const routes = [{name: 'route1'}, {name: 'route2'}].map(mockInterface);
 		const title = 'Test Router';
-		const frame = () => {};
+		const frame = ({children}) => children;
 
 		const match = {};
 		const history = {};
 		const location = {};
 		const otherProps = {foo: 'bar'};
 
-		let RouterRender;
-		let RouterCmp;
+		const RouterRender = Router.for(routes, {title, frame});
 
-		beforeEach(() => {
-			RouterRender = Router.for(routes, {title, frame});
+		const {root} = TestRenderer.create((
+			<RouterRender
+				match={match}
+				history={history}
+				location={location}
+				{...otherProps}
+			/>
+		));
 
-			RouterCmp = shallow((
-				<RouterRender
-					match={match}
-					history={history}
-					location={location}
-					{...otherProps}
-				/>
-			));
-		});
+		const router = root.findByType(Router);
 
 		test('the static Router has correct routes and is passed as the _router prop', () => {
 			expect(RouterRender.Router.routes).toEqual(routes);
-			expect(RouterCmp.prop('_router')).toEqual(RouterRender.Router);
+			expect(router.props['_router']).toEqual(RouterRender.Router);
 		});
 
 		test('title prop is the same as in the config', () => {
-			expect(RouterCmp.prop('title')).toEqual(title);
+			expect(router.props.title).toEqual(title);
 		});
 
 		test('frame prop is the same as in the config', () => {
-			expect(RouterCmp.prop('frame')).toEqual(frame);
+			expect(router.props.frame).toEqual(frame);
 		});
 
 		test('match prop is the same as the render prop', () => {
-			expect(RouterCmp.prop('match')).toEqual(match);
+			expect(router.props.match).toEqual(match);
 		});
 
 		test('_routerProps is the same as other render props', () => {
-			expect(RouterCmp.prop('_routerProps').foo).toEqual('bar');
+			expect(router.props['_routerProps'].foo).toEqual('bar');
 		});
 	});
 
 	test('passes title to WithTitle', () => {
 		const title = 'title';
-		const routerCmp = mount(<Router title={title} _router={new RouterConfig([])} />);
+		const renderer = TestRenderer.create(<Router title={title} _router={new RouterConfig([])} />);
 
-		const withTitle = routerCmp.find(WithTitle);
+		const withTitle = renderer.root.findByType(WithTitle);
 
-		expect(withTitle.prop('title')).toEqual(title);
+		expect(withTitle.props.title).toEqual(title);
 	});
 
 	describe('BrowserRouter', () => {
 		test('renders BrowserRouter if no history in context', () => {
-			const routerCmp = mount(<Router _router={new RouterConfig([])} />);
-			const browserRouter = routerCmp.find(BrowserRouter);
+			const renderer = TestRenderer.create(<Router _router={new RouterConfig([])} />);
+			const browserRouter = renderer.root.findByType(BrowserRouter);
 
-			expect(browserRouter.exists()).toBeTruthy();
+			expect(browserRouter).toBeTruthy();
 		});
 
 		test('does not render BrowserRouter if history in context', () => {
 			const router = {history: {}, route: {}, getRouteFor () {}, createHref () {}};
-			const routerCmp = mount((
-				<RouterContext.Provider value={router}>
+			const Ctx = inject(router);
+			const renderer = TestRenderer.create((
+				<Ctx>
 					<Router _router={new RouterConfig([])} />
-				</RouterContext.Provider>
-			), {
-				childContextTypes: {
-					router: PropTypes.any,
-				},
-				context: {
-					router
-				}
-			});
-			const browserRouter = routerCmp.find(BrowserRouter);
-
-			expect(browserRouter.exists()).toBeFalsy();
+				</Ctx>
+			));
+			expect(() => renderer.root.findByType(BrowserRouter)).toThrow();
 		});
 	});
 });
