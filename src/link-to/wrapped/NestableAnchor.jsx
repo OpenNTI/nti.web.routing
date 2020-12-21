@@ -52,7 +52,7 @@ const NestableAnchor = React.forwardRef(
 
 		props.ref = forwardedRef || innerRef;
 
-		const Anchor = as || (nested ? 'div' : 'a');
+		const Anchor = as || (nested ? 'span' : 'a');
 
 		return (
 			<AnchorContext.Provider value={true}>
