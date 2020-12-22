@@ -19,7 +19,7 @@ const WrappedLink = React.forwardRef(({component: as, ...props}, ref) => {
 		<ContextMerger>
 			{(context) => {
 				if (context?.disabled) {
-					const Cmp = as || 'div';
+					const Cmp = as || 'span';
 					return (<Cmp {...props} />);
 				}
 
