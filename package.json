@@ -24,6 +24,7 @@
     "routing"
   ],
   "dependencies": {
+    "@nti/lib-commons": "NextThought/nti.lib.commons",
     "@nti/lib-ntiids": "NextThought/nti.lib.ntiids",
     "@nti/util-logger": "NextThought/nti.util.logger",
     "@nti/web-client": "NextThought/nti.web.client",
