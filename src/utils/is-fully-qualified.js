@@ -1,8 +1,8 @@
 const PROTOCOL_LESS = /^\/\/.*/;//starts with //
 
 export function isFullyQualified (part) {
-	if (part == null) {
-		return true;
+	if (part == null || part.charAt(0) === '#') {
+		return false;
 	}
 	try {
 		// URL constructor will throw if the input is not fully qualified
