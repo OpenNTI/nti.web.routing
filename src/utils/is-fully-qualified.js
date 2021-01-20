@@ -1,6 +1,6 @@
 const PROTOCOL_LESS = /^\/\/.*/;//starts with //
 
-export function isFullyResolved (part) {
+export function isFullyQualified (part) {
 	if (part == null) {
 		return true;
 	}

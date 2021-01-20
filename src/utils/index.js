@@ -1,4 +1,4 @@
 export { isExternal } from './is-external';
-export { isFullyResolved } from './is-fully-resolved';
+export { isFullyQualified } from './is-fully-qualified';
 export { resolveRoute } from './resolve';
 export { createPath } from 'history';

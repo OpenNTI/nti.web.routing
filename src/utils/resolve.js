@@ -3,7 +3,7 @@ import {resolve} from 'path';
 import {createPath, parsePath} from 'history';
 import {getConfig} from '@nti/web-client';
 
-import {isFullyResolved} from './is-fully-resolved';
+import {isFullyQualified} from './is-fully-qualified';
 
 const doesEndInSlash = RegExp.prototype.test.bind(/\/$/);
 
@@ -20,7 +20,7 @@ function resolveLocation (base, location) {
 }
 
 function resolvePath (base, path) {
-	if (isFullyResolved(path)) { return path; }
+	if (isFullyQualified(path)) { return path; }
 
 	const resolved = resolve(base, path);
 

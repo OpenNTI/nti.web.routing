@@ -1,7 +1,7 @@
-import {isFullyResolved} from '../../utils';
+import {isFullyQualified} from '../../utils';
 
 function doReplace (history, href) {
-	if (isFullyResolved(href)) {
+	if (isFullyQualified(href)) {
 		global.location.replace(href);
 	} else {
 		history.replace(href);
@@ -9,7 +9,7 @@ function doReplace (history, href) {
 }
 
 function doPush (history, href) {
-	if (isFullyResolved(href)) {
+	if (isFullyQualified(href)) {
 		global.location.assign(href);
 	} else {
 		history.push(href);
@@ -35,7 +35,7 @@ export default function routeTo (router, path) {
 export function topLevelNavigate (href, replace) {
 	const {location} = global;
 
-	if (isFullyResolved(href)) {
+	if (isFullyQualified(href)) {
 		const method = replace
 			? location.replace
 			: location.assign;
