@@ -1,11 +1,13 @@
 const PROTOCOL_LESS = /^\/\/.*/;//starts with //
-const NULL_PROTO = 'x:';
 
 export function isFullyResolved (part) {
 	if (part == null) {
 		return true;
 	}
-	const {protocol, host} = new URL(part, NULL_PROTO + '/');
-
-	return (protocol !== NULL_PROTO && host) || PROTOCOL_LESS.test(part);
+	try {
+		// URL constructor will throw if the input is not fully qualified
+		return Boolean(new URL(part));
+	} catch {
+		return PROTOCOL_LESS.test(part);
+	}
 }
