@@ -1,3 +1,3 @@
-export escapeBasepath from './escape-basepath';
-export getParamProps from './get-param-props';
-export getPartInfo from './get-part-info';
+export { default as escapeBasepath } from './escape-basepath';
+export { default as getParamProps } from './get-param-props';
+export { default as getPartInfo } from './get-part-info';

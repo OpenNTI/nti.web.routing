@@ -1,5 +1,5 @@
-export Name from './Name';
-export Object from './Object';
-export Path from './Path';
+export { default as Name } from './Name';
+export { default as Object } from './Object';
+export { default as Path } from './Path';
 
 export * as Static from './static';

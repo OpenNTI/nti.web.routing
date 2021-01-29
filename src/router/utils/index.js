@@ -1,1 +1,1 @@
-export getFrameProps from './get-frame-props';
+export { default as getFrameProps } from './get-frame-props';
