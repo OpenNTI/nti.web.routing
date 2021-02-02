@@ -18,7 +18,7 @@ export default class RouterConfig {
 	/**
 	 * Creates a router config
 	 * @param  {[RouteConfig]} routes a list of route configs
-	 * @return {RouterConfig}           a router config for the given routes
+	 * @returns {RouterConfig}           a router config for the given routes
 	 */
 	constructor (routes) {
 		Object.defineProperties(this, {

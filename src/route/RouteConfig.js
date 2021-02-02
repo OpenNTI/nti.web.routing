@@ -15,16 +15,16 @@ export default class RouteConfig {
 	 * See: https://reacttraining.com/react-router/web/api/Route for an explanation of the config
 	 *
 	 * @param  {Object} config              the config for the route
-	 * @param {String} config.path          the path to match for the route
-	 * @param {Boolean} config.exact        the path has to match the location exactly
-	 * @param {Boolean} config.strict       the path has to match the location strictly
+	 * @param {string} config.path          the path to match for the route
+	 * @param {boolean} config.exact        the path has to match the location exactly
+	 * @param {boolean} config.strict       the path has to match the location strictly
 	 * @param {Object} config.component     the component to render, if the component statically defines Router  it will be used for config.Router
 	 * @param {Object} config.router        a sub router
-	 * @param {String} config.name          name to find the route by
+	 * @param {string} config.name          name to find the route by
 	 * @param {Object} config.props         extra props to pass to the component for the route
 	 * @param {Function} config.buildPathFor build the url
 	 * @param {Function} config.getRouteFor a method that takes an object and returns a route if it can handle showing it
-	 * @return {RouteConfig}                a RouteConfig for the given config
+	 * @returns {RouteConfig}                a RouteConfig for the given config
 	 */
 	constructor (config) {
 		Object.defineProperties(this, {

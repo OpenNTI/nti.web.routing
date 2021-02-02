@@ -1,7 +1,6 @@
 /* eslint-env jest */
 import React from 'react';
 import {Router} from 'react-router-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import TestRenderer from 'react-test-renderer';
 
 import BrowserRouter from '../BrowserRouter';

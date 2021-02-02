@@ -31,8 +31,8 @@ export default class Router extends React.Component {
 	 * @param {Array} routes    the list of routes to include in the router
 	 * @param {Object} config   different configurations to control how the router works
 	 * @param {Component} config.frame  the component to render as a frame around the routes
-	 * @param {String} config.title     a title to use when the route is active
-	 * @return {Router}          Router component for given routes and config
+	 * @param {string} config.title     a title to use when the route is active
+	 * @returns {Router}          Router component for given routes and config
 	 */
 	static for (routes, config) {
 		const router = new RouterConfig(routes);
