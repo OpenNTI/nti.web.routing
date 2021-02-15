@@ -178,7 +178,18 @@ export default class Router extends React.Component {
 		}
 
 		const routes = () => (
-			<Switch>{_router.map(route => this.renderRoute(route))}</Switch>
+			<Switch>
+				{_router.map(route => (
+					<Route
+						key={route.config.path}
+						{...route.getRouteConfig(
+							this.baseroute,
+							!!Frame,
+							_routerProps
+						)}
+					/>
+				))}
+			</Switch>
 		);
 
 		if (!Frame) {
@@ -190,13 +201,5 @@ export default class Router extends React.Component {
 				<FrameWrapper>{routes()}</FrameWrapper>
 			</Frame>
 		);
-	}
-
-	renderRoute(route) {
-		const { baseroute } = this;
-		const { _routerProps, frame } = this.props;
-		const config = route.getRouteConfig(baseroute, !!frame, _routerProps);
-
-		return <Route key={config.path} {...config} />;
 	}
 }
