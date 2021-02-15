@@ -1,6 +1,6 @@
-import {createBrowserHistory} from 'history';
+import { createBrowserHistory } from 'history';
 
-import {getPrompt} from '../prompt/Store';
+import { getPrompt } from '../prompt/Store';
 
 let history;
 
@@ -19,13 +19,15 @@ const getUserConfirmation = (_, callback) => {
 
 //TODO: maybe write a custom history object since this one does
 //not let you push titles on to history.
-export default function getHistory () {
+export default function getHistory() {
 	if (!history) {
-		history = createBrowserHistory({getUserConfirmation});
+		history = createBrowserHistory({ getUserConfirmation });
 		history.awaitUserConfirmation = () => {
-			return new Promise((fulfill, reject) => (
-				getUserConfirmation(void 0, (cont) => (cont ? fulfill() : reject()))
-			));
+			return new Promise((fulfill, reject) =>
+				getUserConfirmation(void 0, cont =>
+					cont ? fulfill() : reject()
+				)
+			);
 		};
 	}
 

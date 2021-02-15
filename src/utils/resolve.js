@@ -1,14 +1,14 @@
-import {resolve} from 'path';
+import { resolve } from 'path';
 
-import {createPath, parsePath} from 'history';
-import {getConfig} from '@nti/web-client';
+import { createPath, parsePath } from 'history';
+import { getConfig } from '@nti/web-client';
 
-import {isFullyQualified} from './is-fully-qualified';
+import { isFullyQualified } from './is-fully-qualified';
 
 const doesEndInSlash = RegExp.prototype.test.bind(/\/$/);
 
-function resolveLocation (base, location) {
-	if(location == null) {
+function resolveLocation(base, location) {
+	if (location == null) {
 		return null;
 	}
 	const state = location;
@@ -16,18 +16,25 @@ function resolveLocation (base, location) {
 	const resolvedPath = resolvePath(base, path);
 	const resolvedLocation = parsePath(resolvedPath);
 
-	return {...state, ...resolvedLocation};
+	return { ...state, ...resolvedLocation };
 }
 
-function resolvePath (base, path) {
-	if (isFullyQualified(path)) { return path; }
+function resolvePath(base, path) {
+	if (isFullyQualified(path)) {
+		return path;
+	}
 
 	const resolved = resolve(base, path);
 
-	return !doesEndInSlash(resolved) && doesEndInSlash(path) ? (resolved + '/') : resolved;
+	return !doesEndInSlash(resolved) && doesEndInSlash(path)
+		? resolved + '/'
+		: resolved;
 }
 
-export function resolveRoute (base, path) {
-	const result = typeof path === 'string' ? resolvePath(base, path) : resolveLocation(base, path);
+export function resolveRoute(base, path) {
+	const result =
+		typeof path === 'string'
+			? resolvePath(base, path)
+			: resolveLocation(base, path);
 	return getConfig('overrides.routes')[result] || result;
 }

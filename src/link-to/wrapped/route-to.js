@@ -1,6 +1,6 @@
-import {isFullyQualified} from '../../utils';
+import { isFullyQualified } from '../../utils';
 
-function doReplace (history, href) {
+function doReplace(history, href) {
 	if (isFullyQualified(href)) {
 		global.location.replace(href);
 	} else {
@@ -8,7 +8,7 @@ function doReplace (history, href) {
 	}
 }
 
-function doPush (history, href) {
+function doPush(history, href) {
 	if (isFullyQualified(href)) {
 		global.location.assign(href);
 	} else {
@@ -16,13 +16,13 @@ function doPush (history, href) {
 	}
 }
 
-export default function routeTo (router, path) {
+export default function routeTo(router, path) {
 	if (path.target === '_blank' || path.download) {
 		return window.open(path.href);
 	}
 
 	const isHref = typeof path === 'string';
-	const {history} = router;
+	const { history } = router;
 
 	if (!isHref && path.replace) {
 		return doReplace(history, path.href);
@@ -31,14 +31,11 @@ export default function routeTo (router, path) {
 	}
 }
 
-
-export function topLevelNavigate (href, replace) {
-	const {location} = global;
+export function topLevelNavigate(href, replace) {
+	const { location } = global;
 
 	if (isFullyQualified(href)) {
-		const method = replace
-			? location.replace
-			: location.assign;
+		const method = replace ? location.replace : location.assign;
 
 		method.call(location, href);
 		return true;

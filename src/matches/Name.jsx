@@ -3,35 +3,31 @@ import PropTypes from 'prop-types';
 
 import Path from './Path';
 
-
 export default class MatchesName extends React.Component {
-
 	static propTypes = {
 		name: PropTypes.string.isRequired,
-		render: PropTypes.func
-	}
+		render: PropTypes.func,
+	};
 
 	static contextTypes = {
 		router: PropTypes.shape({
-			getRouteFor: PropTypes.func
-		})
-	}
+			getRouteFor: PropTypes.func,
+		}),
+	};
 
-	render () {
+	render() {
 		const {
-			props: {name},
-			context: {router}
+			props: { name },
+			context: { router },
 		} = this;
 
 		const path = router.getRouteFor(name);
 
 		const props = {
 			...this.props,
-			path
+			path,
 		};
 
-		return (
-			<Path {...props} />
-		);
+		return <Path {...props} />;
 	}
 }

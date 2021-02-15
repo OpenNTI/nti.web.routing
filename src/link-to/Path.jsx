@@ -4,86 +4,79 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Logger from '@nti/util-logger';
 
-import {isExternal, resolveRoute} from '../utils';
+import { isExternal, resolveRoute } from '../utils';
 
-import {Link, NavLink} from './wrapped';
-
+import { Link, NavLink } from './wrapped';
 
 const logger = Logger.get('nti-web-routing:link-to:path');
 
 export default class PathLink extends React.Component {
-	static routeTo (router, path) {
+	static routeTo(router, path) {
 		return Link.routeTo(router, path);
 	}
 
 	static propTypes = {
-		to: PropTypes.oneOfType([
-			PropTypes.string,
-			PropTypes.object
-		]),
+		to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 		className: PropTypes.string,
 		activeClassName: PropTypes.string,
 		activeStyle: PropTypes.object,
 
 		onClick: PropTypes.func,
 		onMouseEnter: PropTypes.func,
-		onMouseLeave: PropTypes.func
-	}
+		onMouseLeave: PropTypes.func,
+	};
 
 	static contextTypes = {
 		router: PropTypes.shape({
-			baseroute: PropTypes.string
+			baseroute: PropTypes.string,
 		}),
 		linkTo: PropTypes.shape({
 			depth: PropTypes.number,
 			navigateToSubLink: PropTypes.func,
 			activateSubLink: PropTypes.func,
-			deactivateSubLink: PropTypes.func
-		})
-	}
+			deactivateSubLink: PropTypes.func,
+		}),
+	};
 
 	static childContextTypes = {
 		linkTo: PropTypes.shape({
 			depth: PropTypes.number,
 			activateSubLin: PropTypes.func,
-			deactivateSubLink: PropTypes.func
-		})
-	}
-
+			deactivateSubLink: PropTypes.func,
+		}),
+	};
 
 	state = {
-		toOverride: null
-	}
+		toOverride: null,
+	};
 
-	get to () {
+	get to() {
 		return this.state.toOverride || this.props.to;
 	}
 
-
-	get parentLink () {
+	get parentLink() {
 		return this.context.linkTo || null;
 	}
 
-	get router () {
+	get router() {
 		return this.context.router || {};
 	}
 
-
-	get baseroute () {
-		const {router} = this;
+	get baseroute() {
+		const { router } = this;
 
 		return router.baseroute || '';
 	}
 
+	attachAnchor = x => (this.anchor = x);
 
-	attachAnchor = x => this.anchor = x
-
-
-	getChildContext () {
-		const {parentLink} = this;
+	getChildContext() {
+		const { parentLink } = this;
 
 		if (parentLink && parentLink.depth > 1) {
-			logger.debug('Nested Links more than one level deep might have some weird behaviors');
+			logger.debug(
+				'Nested Links more than one level deep might have some weird behaviors'
+			);
 		}
 
 		return {
@@ -91,54 +84,52 @@ export default class PathLink extends React.Component {
 				depth: parentLink ? parentLink.depth + 1 : 0,
 				activateSubLink: this.activateSubLink,
 				deactivateSubLink: this.deactivateSubLink,
-				isActiveSubLink: this.isActiveSubLink
-			}
+				isActiveSubLink: this.isActiveSubLink,
+			},
 		};
 	}
 
-
-	navigateToSubLink = (link) => {
+	navigateToSubLink = link => {
 		this.setState({
-			toOverride: link
+			toOverride: link,
 		});
-	}
+	};
 
-
-	isActiveSubLink = (link) => {
+	isActiveSubLink = link => {
 		return link && link === this.state.toOverride;
-	}
+	};
 
-
-	activateSubLink = (link) => {
+	activateSubLink = link => {
 		this.setState({
-			toOverride: link
+			toOverride: link,
 		});
-	}
+	};
 
-
-	deactivateSubLink = (link) => {
+	deactivateSubLink = link => {
 		if (!this.isActiveSubLink(link)) {
 			logger.warn('Deactivating a link that is not active...');
 		} else {
 			this.setState({
-				toOverride: null
+				toOverride: null,
 			});
 		}
-	}
+	};
 
+	componentWillUnmount() {
+		const { parentLink, to } = this;
 
-	componentWillUnmount () {
-		const {parentLink, to} = this;
-
-		if (parentLink && parentLink.isActiveSubLink && parentLink.isActiveSubLink(to)) {
+		if (
+			parentLink &&
+			parentLink.isActiveSubLink &&
+			parentLink.isActiveSubLink(to)
+		) {
 			parentLink.deactivateSubLink(to);
 		}
 	}
 
-
-	onMouseEnter = (e) => {
-		const {parentLink, to} = this;
-		const {onMouseEnter} = this.props;
+	onMouseEnter = e => {
+		const { parentLink, to } = this;
+		const { onMouseEnter } = this.props;
 
 		if (parentLink && parentLink.activateSubLink) {
 			parentLink.activateSubLink(to);
@@ -147,12 +138,11 @@ export default class PathLink extends React.Component {
 		if (onMouseEnter) {
 			onMouseEnter(e);
 		}
-	}
+	};
 
-
-	onMouseLeave = (e) => {
-		const {parentLink, to} = this;
-		const {onMouseLeave} = this.props;
+	onMouseLeave = e => {
+		const { parentLink, to } = this;
+		const { onMouseLeave } = this.props;
 
 		if (parentLink && parentLink.deactivateSubLink) {
 			parentLink.deactivateSubLink(to);
@@ -161,11 +151,15 @@ export default class PathLink extends React.Component {
 		if (onMouseLeave) {
 			onMouseLeave(e);
 		}
-	}
+	};
 
-
-	render () {
-		const {className, activeClassName, activeStyle, ...otherProps} = this.props;
+	render() {
+		const {
+			className,
+			activeClassName,
+			activeStyle,
+			...otherProps
+		} = this.props;
 		const path = resolveRoute(this.baseroute, this.to);
 
 		const props = {
@@ -174,9 +168,7 @@ export default class PathLink extends React.Component {
 		};
 
 		if (!this.context.router) {
-			return (
-				<div {...props} />
-			);
+			return <div {...props} />;
 		}
 
 		if (isExternal(path, this.baseroute)) {
@@ -192,8 +184,14 @@ export default class PathLink extends React.Component {
 			props.component = 'span';
 		}
 
-		return activeClassName || activeStyle ?
-			(<NavLink {...props} activeClassName={activeClassName} activeStyle={activeStyle} />) :
-			(<Link  {...props} />);
+		return activeClassName || activeStyle ? (
+			<NavLink
+				{...props}
+				activeClassName={activeClassName}
+				activeStyle={activeStyle}
+			/>
+		) : (
+			<Link {...props} />
+		);
 	}
 }

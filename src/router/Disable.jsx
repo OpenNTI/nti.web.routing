@@ -3,26 +3,24 @@ import PropTypes from 'prop-types';
 
 export default class DisabledRouter extends React.Component {
 	static propTypes = {
-		children: PropTypes.node
-	}
-
+		children: PropTypes.node,
+	};
 
 	static childContextTypes = {
 		router: PropTypes.shape({
-			disabled: PropTypes.bool
-		})
-	}
+			disabled: PropTypes.bool,
+		}),
+	};
 
-
-	getChildContext () {
+	getChildContext() {
 		return {
 			router: {
-				disabled: true
-			}
+				disabled: true,
+			},
 		};
 	}
 
-	render () {
+	render() {
 		return React.Children.only(this.props.children);
 	}
 }

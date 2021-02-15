@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Route,
-	Switch
-} from 'react-router-dom';
-import {PropTypes as PT} from '@nti/lib-commons';
+import { Route, Switch } from 'react-router-dom';
+import { PropTypes as PT } from '@nti/lib-commons';
 
 import * as LinkTo from '../link-to';
-import {WithTitle} from '../view';
+import { WithTitle } from '../view';
 import getHistory from '../history';
 
-import {getFrameProps} from './utils';
+import { getFrameProps } from './utils';
 import Context from './Context';
 import BrowserRouter from './BrowserRouter';
 import RouterConfig from './RouterConfig';
@@ -22,7 +19,7 @@ let globalGetRouteFor = null;
 export default class Router extends React.Component {
 	static RouteForProvider = RouteForProvider;
 	static useRouter = Context.useRouter;
-	static setGlobalGetRouteFor (getRouteFor) {
+	static setGlobalGetRouteFor(getRouteFor) {
 		globalGetRouteFor = getRouteFor;
 	}
 
@@ -34,21 +31,20 @@ export default class Router extends React.Component {
 	 * @param {string} config.title     a title to use when the route is active
 	 * @returns {Router}          Router component for given routes and config
 	 */
-	static for (routes, config) {
+	static for(routes, config) {
 		const router = new RouterConfig(routes);
-		const {frame, title} = config || {};
+		const { frame, title } = config || {};
 
 		return class InlineRouter extends React.Component {
-			static Router = router
+			static Router = router;
 			static propTypes = {
-				match: PropTypes.object,//if the router is being used as a component for another route, it will be given a match that we need to use
+				match: PropTypes.object, //if the router is being used as a component for another route, it will be given a match that we need to use
 				history: PropTypes.object,
-				location: PropTypes.object
-			}
+				location: PropTypes.object,
+			};
 
-
-			render () {
-				const {match, history, location, ...otherProps} = this.props;
+			render() {
+				const { match, history, location, ...otherProps } = this.props;
 
 				return (
 					<Router
@@ -73,16 +69,16 @@ export default class Router extends React.Component {
 		frame: PT.component,
 
 		match: PropTypes.object,
-		children: PropTypes.node
-	}
+		children: PropTypes.node,
+	};
 
 	static contextTypes = {
 		router: PropTypes.shape({
 			history: PropTypes.object,
 			route: PropTypes.object,
-			getRouteFor: PropTypes.func
-		})
-	}
+			getRouteFor: PropTypes.func,
+		}),
+	};
 
 	static childContextTypes = {
 		router: PropTypes.shape({
@@ -90,12 +86,12 @@ export default class Router extends React.Component {
 			routeTo: PropTypes.shape({
 				name: PropTypes.func,
 				object: PropTypes.func,
-				path: PropTypes.func
-			})
-		})
-	}
+				path: PropTypes.func,
+			}),
+		}),
+	};
 
-	getChildContext () {
+	getChildContext() {
 		//TODO: this needs to be updated to use the new react context
 		return {
 			router: {
@@ -104,116 +100,103 @@ export default class Router extends React.Component {
 				baseroute: this.baseroute,
 				routeTo: {
 					name: (...args) => LinkTo.Name.routeTo(this, ...args),
-					object:  (...args) => LinkTo.Object.routeTo(this, ...args),
-					path: (...args) => LinkTo.Path.routeTo(this, ...args)
-				}
-			}
+					object: (...args) => LinkTo.Object.routeTo(this, ...args),
+					path: (...args) => LinkTo.Path.routeTo(this, ...args),
+				},
+			},
 		};
 	}
 
-	get router () {
+	get router() {
 		return this.context.router || {};
 	}
 
-
-	get history () {
+	get history() {
 		return this.providedHistory || getHistory();
 	}
 
-	get providedHistory () {
-		const {router} = this;
+	get providedHistory() {
+		const { router } = this;
 
 		return router ? router.history : null;
 	}
 
-
-	get route () {
+	get route() {
 		return this.router?.route || null;
 	}
 
-
-	get baseroute () {
-		const {route, router} = this;
-		const {match:propMatch} = this.props;
+	get baseroute() {
+		const { route, router } = this;
+		const { match: propMatch } = this.props;
 		const match = propMatch || (route && route.match);
 
-		return match ? match.url : (router.baseroute || '');
+		return match ? match.url : router.baseroute || '';
 	}
 
-
-	get parentGetRouteFor () {
+	get parentGetRouteFor() {
 		return this.router.getRouteFor;
 	}
 
-
-	getRouteFor (...args) {
-		const {baseroute, parentGetRouteFor} = this;
-		const {_router} = this.props;
+	getRouteFor(...args) {
+		const { baseroute, parentGetRouteFor } = this;
+		const { _router } = this.props;
 
 		const route = _router.getRouteFor(baseroute, ...args);
 
-		return route || (parentGetRouteFor && parentGetRouteFor(...args)) || (globalGetRouteFor && globalGetRouteFor(...args));
+		return (
+			route ||
+			(parentGetRouteFor && parentGetRouteFor(...args)) ||
+			(globalGetRouteFor && globalGetRouteFor(...args))
+		);
 	}
 
-
-	render () {
-		const {title} = this.props;
+	render() {
+		const { title } = this.props;
 
 		return (
 			<WithTitle title={title}>
-				{
-					this.providedHistory
-						? this.renderRoutes()
-						: this.renderRouter()
-				}
+				{this.providedHistory
+					? this.renderRoutes()
+					: this.renderRouter()}
 			</WithTitle>
 		);
 	}
 
-
-	renderRouter () {
-		const {...otherProps} = this.props;
+	renderRouter() {
+		const { ...otherProps } = this.props;
 
 		return (
-			<BrowserRouter {...otherProps} >
-				{this.renderRoutes()}
-			</BrowserRouter>
+			<BrowserRouter {...otherProps}>{this.renderRoutes()}</BrowserRouter>
 		);
 	}
 
-
-	renderRoutes () {
-		const {_router, _routerProps, children, frame: Frame} = this.props;
+	renderRoutes() {
+		const { _router, _routerProps, children, frame: Frame } = this.props;
 
 		if (React.Children.count(children) > 0) {
 			return React.Children.only(children);
 		}
 
 		const routes = () => (
-			<Switch>
-				{_router.map((route, index) => this.renderRoute(route, index))}
-			</Switch>
+			<Switch>{_router.map(route => this.renderRoute(route))}</Switch>
 		);
 
-		if (!Frame) { return routes(); }
+		if (!Frame) {
+			return routes();
+		}
 
 		return (
 			<Frame {...getFrameProps(this.props)} {..._routerProps}>
-				<FrameWrapper>
-					{routes()}
-				</FrameWrapper>
+				<FrameWrapper>{routes()}</FrameWrapper>
 			</Frame>
 		);
 	}
 
-
-	renderRoute (route, index) {
-		const {baseroute} = this;
-		const {_routerProps, frame} = this.props;
+	renderRoute(route) {
+		const { baseroute } = this;
+		const { _routerProps, frame } = this.props;
 		const config = route.getRouteConfig(baseroute, !!frame, _routerProps);
 
-		return (
-			<Route key={index} {...config} />
-		);
+		return <Route key={config.path} {...config} />;
 	}
 }

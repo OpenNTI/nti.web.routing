@@ -1,10 +1,10 @@
 import Path from 'path';
 
 import React from 'react';
-import {defineProtected} from '@nti/lib-commons';
+import { defineProtected } from '@nti/lib-commons';
 
 import RouteWrapper from './RouteWrapper';
-import {getPartInfo, escapeBasepath} from './utils';
+import { getPartInfo, escapeBasepath } from './utils';
 
 const HAS_PARAMS = /:/g;
 
@@ -26,45 +26,54 @@ export default class RouteConfig {
 	 * @param {Function} config.getRouteFor a method that takes an object and returns a route if it can handle showing it
 	 * @returns {RouteConfig}                a RouteConfig for the given config
 	 */
-	constructor (config) {
+	constructor(config) {
 		Object.defineProperties(this, {
 			...defineProtected({
-				config
-			})
+				config,
+			}),
 		});
 
-		if (!config.component) { throw new Error('Cannot define a route without a component'); }
-		if (!config.path) { throw new Error('Cannot define a route without a path'); }
+		if (!config.component) {
+			throw new Error('Cannot define a route without a component');
+		}
+		if (!config.path) {
+			throw new Error('Cannot define a route without a path');
+		}
 	}
 
-	getRouteConfig (basepath, hasFrame, routerProps) {
-		const {path, exact, strict, component, props:componentProps} = this.config || {};
+	getRouteConfig(basepath, hasFrame, routerProps) {
+		const { path, exact, strict, component, props: componentProps } =
+			this.config || {};
 		const config = {
 			path: Path.join(escapeBasepath(basepath), path || ''),
 			exact,
-			strict
+			strict,
 		};
 
 		//Potential memory leak creating a function everytime, but I can't think of a way around it...
-		config.render = function InlineRouterWrapper (props) {
-			return React.createElement(RouteWrapper, {routeProps: props, component, hasFrame, componentProps, routerProps });
+		config.render = function InlineRouterWrapper(props) {
+			return React.createElement(RouteWrapper, {
+				routeProps: props,
+				component,
+				hasFrame,
+				componentProps,
+				routerProps,
+			});
 		};
 
 		return config;
 	}
 
-
-	hasPathParams () {
+	hasPathParams() {
 		return HAS_PARAMS.test(this.config.path);
 	}
 
-	getSubRouter () {
+	getSubRouter() {
 		return this.config.component.Router || this.config.router;
 	}
 
-
-	buildPathFor (params, ...args) {
-		const {config} = this;
+	buildPathFor(params, ...args) {
+		const { config } = this;
 
 		if (config && config.buildPathFor) {
 			return config.buildPathFor(params, ...args);
@@ -74,11 +83,13 @@ export default class RouteConfig {
 		if (!this.hasPathParams()) {
 			return {
 				path: config.path,
-				canBeBase: true
+				canBeBase: true,
 			};
 		}
 
-		if (!params || typeof params !== 'object') { params = {}; }
+		if (!params || typeof params !== 'object') {
+			params = {};
+		}
 
 		const parts = config.path.split('/');
 		let path = '';
@@ -92,10 +103,10 @@ export default class RouteConfig {
 				path = Path.join(path, info.raw);
 			} else if (data !== undefined) {
 				path = Path.join(path, data);
-			//if the param is not required and we are the last one, we have a valid path, it just can't be extended any.
+				//if the param is not required and we are the last one, we have a valid path, it just can't be extended any.
 			} else if (!info.isRequired && i === parts.length - 1) {
 				canBeBase = false;
-			}else {
+			} else {
 				path = null;
 				canBeBase = false;
 				break;
@@ -104,45 +115,53 @@ export default class RouteConfig {
 
 		return {
 			path,
-			canBeBase
+			canBeBase,
 		};
 	}
 
-
-	getRouteFor (obj, ...args) {
-		return typeof obj === 'string' ? this.getRouteForName(obj, args) : this.getRouteForObject(obj, args);
+	getRouteFor(obj, ...args) {
+		return typeof obj === 'string'
+			? this.getRouteForName(obj, args)
+			: this.getRouteForObject(obj, args);
 	}
 
-
-	getRouteForName (name, args) {
-		const {config} = this;
-		const {path, canBeBase} = this.buildPathFor(...args);
+	getRouteForName(name, args) {
+		const { config } = this;
+		const { path, canBeBase } = this.buildPathFor(...args);
 
 		//if this route has the same name use it
-		if (name === config.name && path) { return path; }
+		if (name === config.name && path) {
+			return path;
+		}
 
 		//else if we have a subRouter and our path doesn't have any params we can check the subRouter for the
 		//named route
 		const subRouter = this.getSubRouter();
-		const subRoute = canBeBase && subRouter ? subRouter.getRouteFor(path, name) : null;
+		const subRoute =
+			canBeBase && subRouter ? subRouter.getRouteFor(path, name) : null;
 
 		return subRoute || null;
 	}
 
-
-	getRouteForObject (obj, args) {
-		const {config} = this;
+	getRouteForObject(obj, args) {
+		const { config } = this;
 		//if this route can handle the obj return that object
-		const route = config.getRouteFor ? config.getRouteFor(obj, ...args) : null;
+		const route = config.getRouteFor
+			? config.getRouteFor(obj, ...args)
+			: null;
 
-		if (route) { return route; }
+		if (route) {
+			return route;
+		}
 
 		//else if we have a subRouter and our path doesn't have any params we can build the subRoute if
 		//we have a subRouter
 		const subRouter = this.getSubRouter();
-		const subRoute = !this.hasPathParams() && subRouter ? subRouter.getRouteFor(config.path, obj, ...args) : null;
+		const subRoute =
+			!this.hasPathParams() && subRouter
+				? subRouter.getRouteFor(config.path, obj, ...args)
+				: null;
 
 		return subRoute || null;
 	}
-
 }

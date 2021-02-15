@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FrameContext = React.createContext({frameProps: {}});
+const FrameContext = React.createContext({ frameProps: {} });
 
 /**
  * The frame is wrapping a react-router Switch component, and the Switch component
@@ -14,13 +14,12 @@ export default class NTIRouterFrame extends React.Component {
 	static Consumer = FrameContext.Consumer;
 
 	static propTypes = {
-		children: PropTypes.any
-	}
+		children: PropTypes.any,
+	};
 
-
-	render () {
-		const {children, ...otherProps} = this.props;
-		const context = {frameProps: otherProps};
+	render() {
+		const { children, ...otherProps } = this.props;
+		const context = { frameProps: otherProps };
 
 		return (
 			<FrameContext.Provider value={context}>

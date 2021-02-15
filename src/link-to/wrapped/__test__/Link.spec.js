@@ -8,34 +8,39 @@ import Link from '../Link';
 
 const history = getHistory();
 
-const getClickEvent = () => {return {button: 0}; };
+const getClickEvent = () => {
+	return { button: 0 };
+};
 
-function renderLink (props) {
+function renderLink(props) {
 	class Wrapper extends React.Component {
 		static propTypes = {
-			children: PropTypes.any
-		}
+			children: PropTypes.any,
+		};
 
 		static childContextTypes = {
-			router: PropTypes.object
-		}
+			router: PropTypes.object,
+		};
 
-
-		getChildContext () {
+		getChildContext() {
 			return {
 				router: {
-					history
-				}
+					history,
+				},
 			};
 		}
 
-		render () {
+		render() {
 			return React.Children.only(this.props.children);
 		}
 	}
 
 	let link;
-	render((<Wrapper><Link ref={x => link = x} {...props} /></Wrapper>));
+	render(
+		<Wrapper>
+			<Link ref={x => (link = x)} {...props} />
+		</Wrapper>
+	);
 
 	return link;
 }
@@ -48,7 +53,7 @@ describe('Link', () => {
 			delete global.location;
 			global.location = {
 				replace: jest.fn(),
-				assign: jest.fn()
+				assign: jest.fn(),
 			};
 
 			jest.spyOn(history, 'push').mockImplementation(() => {});
@@ -56,11 +61,13 @@ describe('Link', () => {
 		});
 
 		test('push fully resolved url', () => {
-			const link = renderLink({to: 'http://www.google.com'});
+			const link = renderLink({ to: 'http://www.google.com' });
 
 			fireEvent.click(link, getClickEvent());
 
-			expect(global.location.assign).toHaveBeenCalledWith('http://www.google.com');
+			expect(global.location.assign).toHaveBeenCalledWith(
+				'http://www.google.com'
+			);
 			expect(global.location.replace).not.toHaveBeenCalled();
 
 			expect(history.push).not.toHaveBeenCalled();
@@ -68,19 +75,24 @@ describe('Link', () => {
 		});
 
 		test('replace fully resolved url', () => {
-			const link = renderLink({to: 'http://www.google.com', replace: true});
+			const link = renderLink({
+				to: 'http://www.google.com',
+				replace: true,
+			});
 
 			fireEvent.click(link, getClickEvent());
 
 			expect(global.location.assign).not.toHaveBeenCalled();
-			expect(global.location.replace).toHaveBeenCalledWith('http://www.google.com');
+			expect(global.location.replace).toHaveBeenCalledWith(
+				'http://www.google.com'
+			);
 
 			expect(history.push).not.toHaveBeenCalled();
 			expect(history.replace).not.toHaveBeenCalled();
 		});
 
 		test('push relative url', () => {
-			const link = renderLink({to: '/foo/bar'});
+			const link = renderLink({ to: '/foo/bar' });
 
 			fireEvent.click(link, getClickEvent());
 
@@ -92,7 +104,7 @@ describe('Link', () => {
 		});
 
 		test('replace relative url', () => {
-			const link = renderLink({to: '/foo/bar', replace: true});
+			const link = renderLink({ to: '/foo/bar', replace: true });
 
 			fireEvent.click(link, getClickEvent());
 
@@ -104,7 +116,7 @@ describe('Link', () => {
 		});
 
 		test('download', () => {
-			const link = renderLink({to: '/document.pdf', download: true});
+			const link = renderLink({ to: '/document.pdf', download: true });
 
 			fireEvent.click(link, getClickEvent());
 

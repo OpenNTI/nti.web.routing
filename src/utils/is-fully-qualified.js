@@ -1,6 +1,6 @@
-const PROTOCOL_LESS = /^\/\/.*/;//starts with //
+const PROTOCOL_LESS = /^\/\/.*/; //starts with //
 
-export function isFullyQualified (part) {
+export function isFullyQualified(part) {
 	if (part == null || part.charAt(0) === '#') {
 		return false;
 	}

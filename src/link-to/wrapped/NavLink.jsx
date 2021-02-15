@@ -1,7 +1,7 @@
 /* eslint react/jsx-no-bind:0 */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Route} from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import Link from './Link';
 
@@ -28,16 +28,16 @@ NavLink.propTypes = {
 		'location',
 		'date',
 		'time',
-		'true'
-	])
+		'true',
+	]),
 };
 NavLink.defaultProps = {
 	activeClassName: 'active',
 	'aria-current': 'true',
 	onActivate: () => {},
-	onDeactivate: () => {}
+	onDeactivate: () => {},
 };
-export default function NavLink (props) {
+export default function NavLink(props) {
 	const {
 		to,
 		exact,
@@ -61,21 +61,22 @@ export default function NavLink (props) {
 			strict={strict}
 			location={location}
 		>
-			{({location:routeLocation, match}) => {
-				const isActive = !!(getIsActive ? getIsActive(match, routeLocation) : match);
+			{({ location: routeLocation, match }) => {
+				const isActive = !!(getIsActive
+					? getIsActive(match, routeLocation)
+					: match);
 
 				let wasActive = ACTIVE_MAP[to];
 
 				if (isActive && !wasActive) {
 					onActivate();
-				} else if (!isActive &&  wasActive) {
+				} else if (!isActive && wasActive) {
 					onDeactivate();
 				}
 
-				if(!isActive) {
+				if (!isActive) {
 					delete ACTIVE_MAP[to];
-				}
-				else {
+				} else {
 					ACTIVE_MAP[to] = isActive;
 				}
 
@@ -84,7 +85,9 @@ export default function NavLink (props) {
 						to={to}
 						className={
 							isActive
-								? [className, activeClassName].filter(i => i).join(' ')
+								? [className, activeClassName]
+										.filter(i => i)
+										.join(' ')
 								: className
 						}
 						style={isActive ? { ...style, ...activeStyle } : style}

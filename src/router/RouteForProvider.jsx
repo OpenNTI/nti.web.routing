@@ -4,50 +4,49 @@ import PropTypes from 'prop-types';
 export default class RouteForProvider extends React.Component {
 	static propTypes = {
 		getRouteFor: PropTypes.func,
-		children: PropTypes.any
-	}
+		children: PropTypes.any,
+	};
 
 	static contextTypes = {
 		router: PropTypes.shape({
-			getRouteFor: PropTypes.func
-		})
-	}
+			getRouteFor: PropTypes.func,
+		}),
+	};
 
 	static childContextTypes = {
 		router: PropTypes.shape({
-			getRouteFor: PropTypes.func
-		})
-	}
+			getRouteFor: PropTypes.func,
+		}),
+	};
 
-
-	getChildContext () {
+	getChildContext() {
 		return {
 			router: {
 				...this.context.router,
-				getRouteFor: (...args) => this.getRouteFor(...args)
-			}
+				getRouteFor: (...args) => this.getRouteFor(...args),
+			},
 		};
 	}
 
-	get router () {
+	get router() {
 		return this.context.router || {};
 	}
 
-	get parentGetRouteFor () {
+	get parentGetRouteFor() {
 		return this.router.getRouteFor;
 	}
 
-	getRouteFor (...args) {
-		const {getRouteFor} = this.props;
-		const {parentGetRouteFor} = this;
+	getRouteFor(...args) {
+		const { getRouteFor } = this.props;
+		const { parentGetRouteFor } = this;
 
 		const route = getRouteFor && getRouteFor(...args, this.router);
 
 		return route || (parentGetRouteFor && parentGetRouteFor(...args));
 	}
 
-	render () {
-		const {children} = this.props;
+	render() {
+		const { children } = this.props;
 
 		return children;
 	}

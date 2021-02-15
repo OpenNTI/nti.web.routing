@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {encodeForURI} from '@nti/lib-ntiids';
-import {resolveBasePath} from '@nti/web-client';
+import { encodeForURI } from '@nti/lib-ntiids';
+import { resolveBasePath } from '@nti/web-client';
 
 import Path from './Path';
 
-function getObjectURL (ntiid) {
+function getObjectURL(ntiid) {
 	if (!ntiid) {
 		return '#';
 	}
@@ -13,9 +13,11 @@ function getObjectURL (ntiid) {
 	return `${resolveBasePath()}id/${encodeForURI(ntiid, true)}`;
 }
 
-function getPathForObject (obj) { return getObjectURL((!obj || typeof obj === 'string') ? obj : obj.NTIID); }
+function getPathForObject(obj) {
+	return getObjectURL(!obj || typeof obj === 'string' ? obj : obj.NTIID);
+}
 
-function getPath (router, object, context) {
+function getPath(router, object, context) {
 	if (typeof object === 'string' || !router.getRouteFor) {
 		return getPathForObject(object);
 	}
@@ -26,10 +28,10 @@ function getPath (router, object, context) {
 }
 
 export default class ObjectLink extends React.Component {
-	static getPathFor = getPathForObject
+	static getPathFor = getPathForObject;
 	static getPathWithRouter = getPath;
 
-	static routeTo (router, object, context) {
+	static routeTo(router, object, context) {
 		const path = getPath(router, object, context);
 
 		if (typeof path === 'function') {
@@ -40,59 +42,54 @@ export default class ObjectLink extends React.Component {
 	}
 
 	static propTypes = {
-		object: PropTypes.oneOfType([
-			PropTypes.object,
-			PropTypes.string
-		]),
+		object: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 		as: PropTypes.any,
 		onClick: PropTypes.func,
-		context: PropTypes.any
-	}
+		context: PropTypes.any,
+	};
 
 	static contextTypes = {
 		router: PropTypes.shape({
-			getRouteFor: PropTypes.func
-		})
-	}
+			getRouteFor: PropTypes.func,
+		}),
+	};
 
-	state = {path: '#'};
+	state = { path: '#' };
 
-	get router () {
+	get router() {
 		return this.context.router || {};
 	}
 
-	get getRouteFor () {
-		const {router} = this;
+	get getRouteFor() {
+		const { router } = this;
 
 		return router.getRouteFor;
 	}
 
-	componentDidMount () {
+	componentDidMount() {
 		this.setupFor(this.props);
 	}
 
-	componentDidUpdate (prevProps) {
-		const {object:oldObject, context:oldContext} = prevProps;
-		const {object:newObject, context:newContext} = this.props;
+	componentDidUpdate(prevProps) {
+		const { object: oldObject, context: oldContext } = prevProps;
+		const { object: newObject, context: newContext } = this.props;
 
 		if (oldObject !== newObject || oldContext !== newContext) {
 			this.setupFor(this.props);
 		}
 	}
 
-
-	setupFor (props) {
-		const {object, context} = this.props;
+	setupFor(props) {
+		const { object, context } = this.props;
 
 		this.setState({
-			path: getPath(this.router, object, context)
+			path: getPath(this.router, object, context),
 		});
 	}
 
-
-	onClick = (e) => {
-		const {onClick} = this.props;
-		const {path} = this.state;
+	onClick = e => {
+		const { onClick } = this.props;
+		const { path } = this.state;
 
 		if (onClick) {
 			onClick(e);
@@ -102,12 +99,12 @@ export default class ObjectLink extends React.Component {
 			path(e);
 			e.preventDefault();
 		}
-	}
+	};
 
-	render () {
-		const { as: tag, ...otherProps} = this.props;
+	render() {
+		const { as: tag, ...otherProps } = this.props;
 		const Cmp = tag || Path;
-		const {path} = this.state;
+		const { path } = this.state;
 
 		delete otherProps.object;
 		delete otherProps.context;
@@ -127,8 +124,6 @@ export default class ObjectLink extends React.Component {
 			pathProps.onClick = path.onClick;
 		}
 
-		return (
-			<Cmp {...otherProps} {...pathProps} />
-		);
+		return <Cmp {...otherProps} {...pathProps} />;
 	}
 }

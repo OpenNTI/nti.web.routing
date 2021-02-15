@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import * as Commons from '@nti/lib-commons';
-
 
 const AnchorContext = React.createContext(false);
 
-const isModifiedEvent = event => !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+const isModifiedEvent = event =>
+	!!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 
 const NestableAnchor = React.forwardRef(
 	(
@@ -28,18 +28,20 @@ const NestableAnchor = React.forwardRef(
 			...rest,
 			onClick: event => {
 				try {
-					if (onClick) {onClick(event);}
+					if (onClick) {
+						onClick(event);
+					}
 				} catch (ex) {
 					event.preventDefault();
 					throw ex;
 				}
 
 				if (
-					!event.defaultPrevented &&			// onClick prevented default
-					event.button === 0 &&				// ignore everything but left clicks
-					(!target || target === '_self') &&	// let browser handle "target=_blank" etc.
-					!download &&						// let browser handle downloads
-					!isModifiedEvent(event)				// ignore clicks with modifier keys
+					!event.defaultPrevented && // onClick prevented default
+					event.button === 0 && // ignore everything but left clicks
+					(!target || target === '_self') && // let browser handle "target=_blank" etc.
+					!download && // let browser handle downloads
+					!isModifiedEvent(event) // ignore clicks with modifier keys
 				) {
 					event.preventDefault();
 					beforeNavigation?.();
@@ -47,7 +49,7 @@ const NestableAnchor = React.forwardRef(
 						navigate?.();
 					}
 				}
-			}
+			},
 		};
 
 		props.ref = forwardedRef || innerRef;

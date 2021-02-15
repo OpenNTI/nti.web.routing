@@ -6,56 +6,55 @@ import TestRenderer from 'react-test-renderer';
 import BrowserRouter from '../BrowserRouter';
 import Router from '../Router';
 import RouterConfig from '../RouterConfig';
-import {WithTitle} from '../../view/';
-import {ContextMerger} from '../utils/context-merger';
+import { WithTitle } from '../../view/';
+import { ContextMerger } from '../utils/context-merger';
 
-function inject (value) {
+function inject(value) {
 	return class ContextInjector extends React.Component {
 		static childContextTypes = {
 			router: PropTypes.any,
-		}
+		};
 
-		getChildContext () {
+		getChildContext() {
 			return {
-				router: value
+				router: value,
 			};
 		}
 
-		render () {
-			return (
-				<ContextMerger>{() => this.props.children}</ContextMerger>
-			);
+		render() {
+			return <ContextMerger>{() => this.props.children}</ContextMerger>;
 		}
 	};
 }
 
-const mockInterface = (route) => ({
+const mockInterface = route => ({
 	...route,
-	getRouteConfig: () => {}
+	getRouteConfig: () => {},
 });
-
 
 describe('Router', () => {
 	describe('.for', () => {
-		const routes = [{name: 'route1'}, {name: 'route2'}].map(mockInterface);
+		const routes = [{ name: 'route1' }, { name: 'route2' }].map(
+			mockInterface
+		);
 		const title = 'Test Router';
-		const frame = ({children}) => children;
+		const frame = ({ children }) => children;
 
 		const match = {};
 		const history = {};
 		const location = {};
-		const otherProps = {foo: 'bar'};
+		const otherProps = { foo: 'bar' };
 
-		const RouterRender = Router.for(routes, {title, frame});
+		const RouterRender = Router.for(routes, { title, frame });
 
-		const {root} = TestRenderer.create((
+		const { root } = TestRenderer.create(
 			<RouterRender
 				match={match}
 				history={history}
 				location={location}
 				{...otherProps}
 			/>
-		));
+		);
 
 		const router = root.findByType(Router);
 
@@ -83,7 +82,9 @@ describe('Router', () => {
 
 	test('passes title to WithTitle', () => {
 		const title = 'title';
-		const renderer = TestRenderer.create(<Router title={title} _router={new RouterConfig([])} />);
+		const renderer = TestRenderer.create(
+			<Router title={title} _router={new RouterConfig([])} />
+		);
 
 		const withTitle = renderer.root.findByType(WithTitle);
 
@@ -92,20 +93,27 @@ describe('Router', () => {
 
 	describe('BrowserRouter', () => {
 		test('renders BrowserRouter if no history in context', () => {
-			const renderer = TestRenderer.create(<Router _router={new RouterConfig([])} />);
+			const renderer = TestRenderer.create(
+				<Router _router={new RouterConfig([])} />
+			);
 			const browserRouter = renderer.root.findByType(BrowserRouter);
 
 			expect(browserRouter).toBeTruthy();
 		});
 
 		test('does not render BrowserRouter if history in context', () => {
-			const router = {history: {}, route: {}, getRouteFor () {}, createHref () {}};
+			const router = {
+				history: {},
+				route: {},
+				getRouteFor() {},
+				createHref() {},
+			};
 			const Ctx = inject(router);
-			const renderer = TestRenderer.create((
+			const renderer = TestRenderer.create(
 				<Ctx>
 					<Router _router={new RouterConfig([])} />
 				</Ctx>
-			));
+			);
 			expect(() => renderer.root.findByType(BrowserRouter)).toThrow();
 		});
 	});

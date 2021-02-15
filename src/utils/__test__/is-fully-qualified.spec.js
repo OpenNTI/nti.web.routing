@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import {isFullyQualified} from '../is-fully-qualified.js';
+import { isFullyQualified } from '../is-fully-qualified.js';
 
 describe('isFullyQualified', () => {
 	test('Has Protocol', () => {

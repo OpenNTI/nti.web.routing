@@ -1,17 +1,16 @@
 /* eslint-env jest */
 import RouterConfig from '../RouterConfig';
 
-function makeRoute (name, routeFor) {
+function makeRoute(name, routeFor) {
 	const route = {
 		name,
-		getRouteFor: () => routeFor
+		getRouteFor: () => routeFor,
 	};
 
 	jest.spyOn(route, 'getRouteFor');
 
 	return route;
 }
-
 
 describe('RouterConfig', () => {
 	test('Defines routes', () => {
@@ -21,14 +20,13 @@ describe('RouterConfig', () => {
 		expect(router.routes).toEqual(routes);
 	});
 
-
 	test('Map calls fn for every route', () => {
 		const routes = [makeRoute('route1'), makeRoute('route2')];
 		const router = new RouterConfig(routes);
 
 		let seen = [];
 
-		router.map((route) => seen.push(route));
+		router.map(route => seen.push(route));
 
 		expect(seen.length).toEqual(routes.length);
 
@@ -51,7 +49,11 @@ describe('RouterConfig', () => {
 		});
 
 		test('stops looking once a route returns', () => {
-			const routes = [makeRoute('route1'), makeRoute('route2', 'route'), makeRoute('route3')];
+			const routes = [
+				makeRoute('route1'),
+				makeRoute('route2', 'route'),
+				makeRoute('route3'),
+			];
 			const router = new RouterConfig(routes);
 
 			router.getRouteFor('base/path/');

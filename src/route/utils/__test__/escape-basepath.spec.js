@@ -3,7 +3,7 @@
 import escape from '../escape-basepath';
 
 describe('escapeBasePath', () => {
-	test('escapes +\'s', () => {
+	test("escapes +'s", () => {
 		expect(escape('a+b')).toEqual('a\\+b');
 	});
 });
