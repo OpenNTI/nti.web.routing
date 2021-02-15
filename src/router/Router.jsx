@@ -181,7 +181,7 @@ export default class Router extends React.Component {
 			<Switch>
 				{_router.map(route => (
 					<Route
-						key={route.config.path}
+						key={route.config?.path || route.name}
 						{...route.getRouteConfig(
 							this.baseroute,
 							!!Frame,
