@@ -1,4 +1,4 @@
-import Path from 'path';
+import { join } from 'path';
 
 import React from 'react';
 import { defineProtected } from '@nti/lib-commons';
@@ -15,7 +15,7 @@ export default class RouteConfig {
 	 * See: https://reacttraining.com/react-router/web/api/Route for an explanation of the config
 	 *
 	 * @param  {Object} config              the config for the route
-	 * @param {string} config.path          the path to match for the route
+	 * @param {string|string[]} config.path the path(s) to match for the route
 	 * @param {boolean} config.exact        the path has to match the location exactly
 	 * @param {boolean} config.strict       the path has to match the location strictly
 	 * @param {Object} config.component     the component to render, if the component statically defines Router  it will be used for config.Router
@@ -36,7 +36,14 @@ export default class RouteConfig {
 		if (!config.component) {
 			throw new Error('Cannot define a route without a component');
 		}
-		if (!config.path) {
+
+		if (!Array.isArray(config.path)) {
+			config.path = [config.path];
+		}
+
+		config.path = config.path.filter(Boolean);
+
+		if (!config.path.length) {
 			throw new Error('Cannot define a route without a path');
 		}
 	}
@@ -44,8 +51,9 @@ export default class RouteConfig {
 	getRouteConfig(basepath, hasFrame, routerProps) {
 		const { path, exact, strict, component, props: componentProps } =
 			this.config || {};
+
 		const config = {
-			path: Path.join(escapeBasepath(basepath), path || ''),
+			path: path.map(p => join(escapeBasepath(basepath), p || '')),
 			exact,
 			strict,
 		};
@@ -82,7 +90,7 @@ export default class RouteConfig {
 		//if there are not params there's nothing to build
 		if (!this.hasPathParams()) {
 			return {
-				path: config.path,
+				path: config.path[0],
 				canBeBase: true,
 			};
 		}
@@ -91,7 +99,7 @@ export default class RouteConfig {
 			params = {};
 		}
 
-		const parts = config.path.split('/');
+		const parts = config.path[0].split('/');
 		let path = '';
 		let canBeBase = true;
 
@@ -100,9 +108,9 @@ export default class RouteConfig {
 			let data = params[info.name];
 
 			if (!info.isParam) {
-				path = Path.join(path, info.raw);
+				path = join(path, info.raw);
 			} else if (data !== undefined) {
-				path = Path.join(path, data);
+				path = join(path, data);
 				//if the param is not required and we are the last one, we have a valid path, it just can't be extended any.
 			} else if (!info.isRequired && i === parts.length - 1) {
 				canBeBase = false;
