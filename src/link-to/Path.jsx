@@ -1,4 +1,3 @@
-import './Path.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
@@ -7,6 +6,18 @@ import Logger from '@nti/util-logger';
 import { isExternal, resolveRoute } from '../utils';
 
 import { Link, NavLink } from './wrapped';
+
+const { pathLink } = stylesheet`
+	.path-link {
+		text-decoration: none;
+		outline: none;
+		color: inherit;
+
+		&:focus {
+			outline: none;
+		}
+	}
+`;
 
 const logger = Logger.get('nti-web-routing:link-to:path');
 
@@ -164,7 +175,7 @@ export default class PathLink extends React.Component {
 
 		const props = {
 			...otherProps,
-			className: cx('nti-link-to-path', className),
+			className: cx(pathLink, 'nti-link-to-path', className),
 		};
 
 		if (!this.context.router) {
