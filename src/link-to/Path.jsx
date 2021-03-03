@@ -7,15 +7,13 @@ import { isExternal, resolveRoute } from '../utils';
 
 import { Link, NavLink } from './wrapped';
 
-const { pathLink } = stylesheet`
-	.path-link {
-		text-decoration: none;
-		outline: none;
-		color: inherit;
+const Path = styled.a`
+	text-decoration: none;
+	outline: none;
+	color: inherit;
 
-		&:focus {
-			outline: none;
-		}
+	&:focus {
+		outline: none;
 	}
 `;
 
@@ -175,7 +173,7 @@ export default class PathLink extends React.Component {
 
 		const props = {
 			...otherProps,
-			className: cx(pathLink, 'nti-link-to-path', className),
+			className: cx('nti-link-to-path', className),
 		};
 
 		if (!this.context.router) {
@@ -195,14 +193,11 @@ export default class PathLink extends React.Component {
 			props.component = 'span';
 		}
 
-		return activeClassName || activeStyle ? (
-			<NavLink
-				{...props}
-				activeClassName={activeClassName}
-				activeStyle={activeStyle}
-			/>
-		) : (
-			<Link {...props} />
-		);
+		const active =
+			activeClassName || activeStyle
+				? { activeClassName, activeStyle }
+				: {};
+
+		return <Path as={active ? NavLink : Link} {...props} {...active} />;
 	}
 }
