@@ -196,7 +196,7 @@ export default class PathLink extends React.Component {
 		const active =
 			activeClassName || activeStyle
 				? { activeClassName, activeStyle }
-				: {};
+				: null;
 
 		return <Path as={active ? NavLink : Link} {...props} {...active} />;
 	}
