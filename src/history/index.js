@@ -20,6 +20,9 @@ const getUserConfirmation = (_, callback) => {
 //TODO: maybe write a custom history object since this one does
 //not let you push titles on to history.
 export default function getHistory() {
+	if (typeof document === 'undefined' || typeof window === 'undefined') {
+		return {};
+	}
 	if (!history) {
 		history = createBrowserHistory({ getUserConfirmation });
 		history.awaitUserConfirmation = () => {
