@@ -1,6 +1,7 @@
 import { join } from 'path';
 
 import React from 'react';
+
 import { defineProtected } from '@nti/lib-commons';
 
 import RouteWrapper from './RouteWrapper';

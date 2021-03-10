@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 
 import { createPath, parsePath } from 'history';
+
 import { getConfig } from '@nti/web-client';
 
 import { isFullyQualified } from './is-fully-qualified';

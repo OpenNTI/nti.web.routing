@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
+
 import { PropTypes as PT } from '@nti/lib-commons';
 
 import * as LinkTo from '../link-to';
