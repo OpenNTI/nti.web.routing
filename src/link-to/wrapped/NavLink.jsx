@@ -10,34 +10,7 @@ let ACTIVE_MAP = {};
 /*
  * A <Link> wrapper that knows if it's "active" or not.
  */
-NavLink.propTypes = {
-	to: Link.propTypes.to,
-	exact: PropTypes.bool,
-	strict: PropTypes.bool,
-	location: PropTypes.object,
-	activeClassName: PropTypes.string,
-	className: PropTypes.string,
-	activeStyle: PropTypes.object,
-	style: PropTypes.object,
-	isActive: PropTypes.func,
-	onActivate: PropTypes.func,
-	onDeactivate: PropTypes.func,
-	'aria-current': PropTypes.oneOf([
-		'page',
-		'step',
-		'location',
-		'date',
-		'time',
-		'true',
-	]),
-};
-NavLink.defaultProps = {
-	activeClassName: 'active',
-	'aria-current': 'true',
-	onActivate: () => {},
-	onDeactivate: () => {},
-};
-export default function NavLink(props) {
+export const NavLink = React.forwardRef((props, ref) => {
 	const {
 		to,
 		exact,
@@ -82,6 +55,7 @@ export default function NavLink(props) {
 
 				return (
 					<Link
+						ref={ref}
 						to={to}
 						className={
 							isActive
@@ -98,4 +72,34 @@ export default function NavLink(props) {
 			}}
 		</Route>
 	);
-}
+});
+
+NavLink.propTypes = {
+	to: Link.propTypes.to,
+	exact: PropTypes.bool,
+	strict: PropTypes.bool,
+	location: PropTypes.object,
+	activeClassName: PropTypes.string,
+	className: PropTypes.string,
+	activeStyle: PropTypes.object,
+	style: PropTypes.object,
+	isActive: PropTypes.func,
+	onActivate: PropTypes.func,
+	onDeactivate: PropTypes.func,
+	'aria-current': PropTypes.oneOf([
+		'page',
+		'step',
+		'location',
+		'date',
+		'time',
+		'true',
+	]),
+};
+NavLink.defaultProps = {
+	activeClassName: 'active',
+	'aria-current': 'true',
+	onActivate: () => {},
+	onDeactivate: () => {},
+};
+
+export default NavLink;

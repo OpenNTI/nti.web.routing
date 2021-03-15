@@ -56,6 +56,7 @@ export default class ObjectLink extends React.Component {
 	};
 
 	state = { path: '#' };
+	ref = React.createRef();
 
 	get router() {
 		return this.context.router || {};
@@ -102,15 +103,21 @@ export default class ObjectLink extends React.Component {
 		}
 	};
 
+	getDOMNode() {
+		const {current} = this.ref;
+		return current?.getDOMNode?.() || current;
+	}
+
 	render() {
-		const { as: tag, ...otherProps } = this.props;
-		const Cmp = tag || Path;
+		const { as: Cmp = Path, ...otherProps } = this.props;
 		const { path } = this.state;
 
 		delete otherProps.object;
 		delete otherProps.context;
 
-		let pathProps = {};
+		const pathProps = {
+			ref: this.ref,
+		};
 
 		if (typeof path === 'function') {
 			pathProps.to = '#';

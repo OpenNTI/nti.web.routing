@@ -56,6 +56,7 @@ export default class PathLink extends React.Component {
 		}),
 	};
 
+	ref = React.createRef();
 	state = {
 		toOverride: null,
 	};
@@ -163,6 +164,11 @@ export default class PathLink extends React.Component {
 		}
 	};
 
+	getDOMNode() {
+		const { current } = this.ref;
+		return current?.getDOMNode?.() || current;
+	}
+
 	render() {
 		const {
 			className,
@@ -174,6 +180,7 @@ export default class PathLink extends React.Component {
 
 		const props = {
 			...otherProps,
+			ref: this.ref,
 			className: cx('nti-link-to-path', className),
 		};
 
