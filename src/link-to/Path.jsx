@@ -84,7 +84,7 @@ export default class PathLink extends React.Component {
 	getChildContext() {
 		const { parentLink } = this;
 
-		if (parentLink && parentLink.depth > 1) {
+		if (parentLink?.depth > 1) {
 			logger.debug(
 				'Nested Links more than one level deep might have some weird behaviors'
 			);
@@ -92,7 +92,7 @@ export default class PathLink extends React.Component {
 
 		return {
 			linkTo: {
-				depth: parentLink ? parentLink.depth + 1 : 0,
+				depth: parentLink.depth + 1 || 0,
 				activateSubLink: this.activateSubLink,
 				deactivateSubLink: this.deactivateSubLink,
 				isActiveSubLink: this.isActiveSubLink,
@@ -117,9 +117,7 @@ export default class PathLink extends React.Component {
 	};
 
 	deactivateSubLink = link => {
-		if (!this.isActiveSubLink(link)) {
-			logger.warn('Deactivating a link that is not active...');
-		} else {
+		if (this.isActiveSubLink(link)) {
 			this.setState({
 				toOverride: null,
 			});
@@ -129,11 +127,7 @@ export default class PathLink extends React.Component {
 	componentWillUnmount() {
 		const { parentLink, to } = this;
 
-		if (
-			parentLink &&
-			parentLink.isActiveSubLink &&
-			parentLink.isActiveSubLink(to)
-		) {
+		if (parentLink?.isActiveSubLink?.(to)) {
 			parentLink.deactivateSubLink(to);
 		}
 	}
@@ -142,9 +136,7 @@ export default class PathLink extends React.Component {
 		const { parentLink, to } = this;
 		const { onMouseEnter } = this.props;
 
-		if (parentLink && parentLink.activateSubLink) {
-			parentLink.activateSubLink(to);
-		}
+		parentLink?.activateSubLink?.(to);
 
 		if (onMouseEnter) {
 			onMouseEnter(e);
@@ -155,9 +147,7 @@ export default class PathLink extends React.Component {
 		const { parentLink, to } = this;
 		const { onMouseLeave } = this.props;
 
-		if (parentLink && parentLink.deactivateSubLink) {
-			parentLink.deactivateSubLink(to);
-		}
+		parentLink?.deactivateSubLink?.(to);
 
 		if (onMouseLeave) {
 			onMouseLeave(e);
