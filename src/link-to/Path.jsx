@@ -92,7 +92,7 @@ export default class PathLink extends React.Component {
 
 		return {
 			linkTo: {
-				depth: parentLink.depth + 1 || 0,
+				depth: parentLink?.depth + 1 || 0,
 				activateSubLink: this.activateSubLink,
 				deactivateSubLink: this.deactivateSubLink,
 				isActiveSubLink: this.isActiveSubLink,
