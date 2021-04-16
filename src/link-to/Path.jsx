@@ -11,7 +11,7 @@ import { Link, NavLink } from './wrapped';
 const Path = styled.a`
 	text-decoration: none;
 	outline: none;
-	color: inherit;
+	color: var(--text-color-nav-link, inherit);
 
 	&:focus {
 		outline: none;
