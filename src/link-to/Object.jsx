@@ -104,12 +104,12 @@ export default class ObjectLink extends React.Component {
 	};
 
 	getDOMNode() {
-		const {current} = this.ref;
+		const { current } = this.ref;
 		return current?.getDOMNode?.() || current;
 	}
 
 	render() {
-		const { as: Cmp = Path, ...otherProps } = this.props;
+		const { ...otherProps } = this.props;
 		const { path } = this.state;
 
 		delete otherProps.object;
@@ -132,6 +132,6 @@ export default class ObjectLink extends React.Component {
 			pathProps.onClick = path.onClick;
 		}
 
-		return <Cmp {...otherProps} {...pathProps} />;
+		return <Path {...otherProps} {...pathProps} />;
 	}
 }

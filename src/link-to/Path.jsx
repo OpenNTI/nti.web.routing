@@ -26,6 +26,11 @@ export default class PathLink extends React.Component {
 	}
 
 	static propTypes = {
+		as: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.object,
+			PropTypes.func,
+		]),
 		to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 		className: PropTypes.string,
 		activeClassName: PropTypes.string,
@@ -161,6 +166,7 @@ export default class PathLink extends React.Component {
 
 	render() {
 		const {
+			as: Cmp = Path,
 			className,
 			activeClassName,
 			activeStyle,
@@ -196,6 +202,6 @@ export default class PathLink extends React.Component {
 				? { activeClassName, activeStyle }
 				: null;
 
-		return <Path as={active ? NavLink : Link} {...props} {...active} />;
+		return <Cmp as={active ? NavLink : Link} {...props} {...active} />;
 	}
 }
