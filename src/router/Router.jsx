@@ -26,6 +26,7 @@ export default class Router extends React.Component {
 
 	/**
 	 * Create a Router component for a given set of routes
+	 *
 	 * @param {Array} routes    the list of routes to include in the router
 	 * @param {Object} config   different configurations to control how the router works
 	 * @param {Component} config.frame  the component to render as a frame around the routes
@@ -42,10 +43,11 @@ export default class Router extends React.Component {
 				match: PropTypes.object, //if the router is being used as a component for another route, it will be given a match that we need to use
 				history: PropTypes.object,
 				location: PropTypes.object,
+				baseroute: PropTypes.string
 			};
 
 			render() {
-				const { match, history, location, ...otherProps } = this.props;
+				const { match, history, location, baseroute, ...otherProps } = this.props;
 
 				return (
 					<Router
@@ -56,6 +58,7 @@ export default class Router extends React.Component {
 						match={match}
 						history={history}
 						location={location}
+						baseroute={baseroute}
 					/>
 				);
 			}
@@ -69,6 +72,7 @@ export default class Router extends React.Component {
 		title: PropTypes.string,
 		frame: PT.component,
 
+		baseroute: PropTypes.any,
 		match: PropTypes.object,
 		children: PropTypes.node,
 	};
@@ -127,6 +131,8 @@ export default class Router extends React.Component {
 	}
 
 	get baseroute() {
+		if (this.props.baseroute) { return this.props.baseroute; }
+
 		const { route, router } = this;
 		const { match: propMatch } = this.props;
 		const match = propMatch || (route && route.match);
