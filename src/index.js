@@ -8,6 +8,7 @@ export { default as Router } from './router';
 export * as View from './view';
 export { default as Disable } from './router/Disable';
 export * from './utils';
+export * from './StackNavigationContext';
 
 import {
 	useLocation,
