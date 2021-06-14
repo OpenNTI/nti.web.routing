@@ -31,6 +31,10 @@ class StackInterface {
 			update?.(Object.freeze([...stack, fn]));
 		};
 
+		this.reset = () => {
+			update?.([]);
+		};
+
 		this.length = length;
 	}
 }
