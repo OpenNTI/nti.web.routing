@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 /**
  * @typedef {() => void} RestorerFunction
@@ -10,6 +10,8 @@ import React, { useMemo, useState } from 'react';
 class StackInterface {
 	constructor(stack, update) {
 		const { length } = stack;
+
+		this.valid = !!update;
 
 		/** Execute the top restorer and remove it from the stack. */
 		this.pop =
@@ -47,11 +49,17 @@ export const NavigationStackContext = React.createContext(
 );
 
 export function NavigationStackManager({ children }) {
+	const parent = useContext(NavigationStackContext);
 	/** @type {[RestorerFunction[], (restorer: RestorerFunction) => void]} */
 	const [stack, setStack] = useState([]);
 
 	//TODO: Maybe hook into history and allow back button to trigger pops. (pushes can't be re-constituted so pops are one way... )
-	const value = useMemo(() => new StackInterface(stack, setStack), [stack]);
+	const value = useMemo(
+		() => (parent.valid ? parent : new StackInterface(stack, setStack)),
+		[stack, parent]
+	);
+
+	useEffect(() => value.reset, []);
 
 	return (
 		<NavigationStackContext.Provider value={value}>
