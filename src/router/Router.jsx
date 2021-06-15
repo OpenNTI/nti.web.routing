@@ -43,11 +43,12 @@ export default class Router extends React.Component {
 				match: PropTypes.object, //if the router is being used as a component for another route, it will be given a match that we need to use
 				history: PropTypes.object,
 				location: PropTypes.object,
-				baseroute: PropTypes.string
+				baseroute: PropTypes.string,
 			};
 
 			render() {
-				const { match, history, location, baseroute, ...otherProps } = this.props;
+				const { match, history, location, baseroute, ...otherProps } =
+					this.props;
 
 				return (
 					<Router
@@ -131,7 +132,9 @@ export default class Router extends React.Component {
 	}
 
 	get baseroute() {
-		if (this.props.baseroute) { return this.props.baseroute; }
+		if (this.props.baseroute) {
+			return this.props.baseroute;
+		}
 
 		const { route, router } = this;
 		const { match: propMatch } = this.props;
@@ -148,7 +151,7 @@ export default class Router extends React.Component {
 		const { baseroute, parentGetRouteFor } = this;
 		const { _router } = this.props;
 
-		const route = _router.getRouteFor(baseroute, ...args);
+		const route = _router.getRouteFor(baseroute, ...args, this.props);
 
 		return (
 			route ||
@@ -170,10 +173,12 @@ export default class Router extends React.Component {
 	}
 
 	renderRouter() {
-		const { ...otherProps } = this.props;
+		const { baseroute: basename, ...otherProps } = this.props;
 
 		return (
-			<BrowserRouter {...otherProps}>{this.renderRoutes()}</BrowserRouter>
+			<BrowserRouter {...{ basename, ...otherProps }}>
+				{this.renderRoutes()}
+			</BrowserRouter>
 		);
 	}
 
