@@ -30,6 +30,7 @@ function inject(value) {
 const mockInterface = route => ({
 	...route,
 	getRouteConfig: () => {},
+	isDisabled: () => false,
 });
 
 describe('Router', () => {

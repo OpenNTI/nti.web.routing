@@ -5,6 +5,7 @@ function makeRoute(name, routeFor) {
 	const route = {
 		name,
 		getRouteFor: () => routeFor,
+		isDisabled: () => false,
 	};
 
 	jest.spyOn(route, 'getRouteFor');
