@@ -25,6 +25,7 @@ export default class RouteConfig {
 	 * @param {Object} config.props         extra props to pass to the component for the route
 	 * @param {Function} config.buildPathFor build the url
 	 * @param {Function} config.getRouteFor a method that takes an object and returns a route if it can handle showing it
+	 * @param {Function} config.getRedirect a method to compute a new path to redirect to
 	 * @returns {RouteConfig}                a RouteConfig for the given config
 	 */
 	constructor(config) {
@@ -34,8 +35,10 @@ export default class RouteConfig {
 			}),
 		});
 
-		if (!config.component) {
-			throw new Error('Cannot define a route without a component');
+		if (!config.component && !config.getRedirect) {
+			throw new Error(
+				'Cannot define a route without a component or redirect'
+			);
 		}
 
 		if (!Array.isArray(config.path)) {
@@ -50,8 +53,14 @@ export default class RouteConfig {
 	}
 
 	getRouteConfig(basepath, hasFrame, routerProps) {
-		const { path, exact, strict, component, props: componentProps } =
-			this.config || {};
+		const {
+			path,
+			exact,
+			strict,
+			component,
+			getRedirect,
+			props: componentProps,
+		} = this.config || {};
 
 		const config = {
 			path: path.map(p => join(escapeBasepath(basepath), p || '')),
@@ -67,6 +76,7 @@ export default class RouteConfig {
 				hasFrame,
 				componentProps,
 				routerProps,
+				getRedirect,
 			});
 		};
 
@@ -78,7 +88,7 @@ export default class RouteConfig {
 	}
 
 	getSubRouter() {
-		return this.config.component.Router || this.config.router;
+		return this.config.component?.Router || this.config.router;
 	}
 
 	buildPathFor(params, ...args) {

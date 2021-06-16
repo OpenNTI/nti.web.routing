@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Frame from '../router/Frame';
 import Context from '../router/Context';
+import RedirectToPath from '../redirect-to/Path';
 
 import { getParamProps } from './utils';
 
@@ -12,6 +13,7 @@ RouteWrapper.propTypes = {
 	routerProps: PropTypes.object, //extra props given to the router that we are passing along
 	hasFrame: PropTypes.bool,
 	component: PropTypes.any,
+	getRedirect: PropTypes.func,
 };
 export default function RouteWrapper({
 	routeProps,
@@ -19,6 +21,7 @@ export default function RouteWrapper({
 	routerProps,
 	componentProps,
 	component,
+	getRedirect,
 }) {
 	const { frameProps } = React.useContext(Frame.Context);
 	const params = getParamProps(routeProps);
@@ -30,6 +33,14 @@ export default function RouteWrapper({
 		...params,
 		component,
 	};
+
+	if (getRedirect) {
+		return (
+			<RedirectToPath
+				to={getRedirect({ ...props, ...(hasFrame ? frameProps : {}) })}
+			/>
+		);
+	}
 
 	if (hasFrame) {
 		return <Child {...props} {...frameProps} />;
