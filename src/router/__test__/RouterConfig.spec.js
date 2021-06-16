@@ -42,7 +42,7 @@ describe('RouterConfig', () => {
 			const router = new RouterConfig(routes);
 			const args = ['arg1', 'arg2', 'arg3'];
 
-			router.getRouteFor('base/path/', ...args);
+			router.getRouteFor('base/path/', {}, ...args);
 
 			for (let route of routes) {
 				expect(route.getRouteFor).toHaveBeenCalledWith(...args);
