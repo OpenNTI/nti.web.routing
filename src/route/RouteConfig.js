@@ -26,7 +26,6 @@ export default class RouteConfig {
 	 * @param {Function} config.buildPathFor build the url
 	 * @param {Function} config.getRouteFor a method that takes an object and returns a route if it can handle showing it
 	 * @param {Function} config.getRedirect a method to compute a new path to redirect to
-	 * @param {Function} config.isDisabled a method to determine it the route is disabled
 	 * @returns {RouteConfig}                a RouteConfig for the given config
 	 */
 	constructor(config) {
@@ -51,10 +50,6 @@ export default class RouteConfig {
 		if (!config.path.length) {
 			throw new Error('Cannot define a route without a path');
 		}
-	}
-
-	isDisabled(...args) {
-		return this.config.isDisabled ? this.config.isDisabled(...args) : false;
 	}
 
 	getRouteConfig(basepath, hasFrame, routerProps) {

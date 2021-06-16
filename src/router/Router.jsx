@@ -149,9 +149,9 @@ export default class Router extends React.Component {
 
 	getRouteFor(...args) {
 		const { baseroute, parentGetRouteFor } = this;
-		const { _router, _routerProps } = this.props;
+		const { _router } = this.props;
 
-		const route = _router.getRouteFor(baseroute, _routerProps, ...args);
+		const route = _router.getRouteFor(baseroute, ...args, this.props);
 
 		return (
 			route ||
@@ -183,7 +183,6 @@ export default class Router extends React.Component {
 	}
 
 	renderRoutes() {
-		const { baseroute } = this;
 		const { _router, _routerProps, children, frame: Frame } = this.props;
 
 		if (React.Children.count(children) > 0) {
@@ -192,18 +191,16 @@ export default class Router extends React.Component {
 
 		const routes = () => (
 			<Switch>
-				{_router.map(route =>
-					route.isDisabled(baseroute, _routerProps) ? null : (
-						<Route
-							key={route.config?.path || route.name}
-							{...route.getRouteConfig(
-								baseroute,
-								!!Frame,
-								_routerProps
-							)}
-						/>
-					)
-				)}
+				{_router.map(route => (
+					<Route
+						key={route.config?.path || route.name}
+						{...route.getRouteConfig(
+							this.baseroute,
+							!!Frame,
+							_routerProps
+						)}
+					/>
+				))}
 			</Switch>
 		);
 

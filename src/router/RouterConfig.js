@@ -17,8 +17,7 @@ function getSubRoute(routes, args) {
 export default class RouterConfig {
 	/**
 	 * Creates a router config
-	 *
-	 * @param  {[object]} routes a list of route configs
+	 * @param  {[RouteConfig]} routes a list of route configs
 	 * @returns {RouterConfig}           a router config for the given routes
 	 */
 	constructor(routes) {
@@ -33,13 +32,8 @@ export default class RouterConfig {
 		return this.routes.map(fn);
 	}
 
-	getRouteFor(basePath, routerProps, ...args) {
-		const subRoute = getSubRoute(
-			this.routes.filter(
-				route => !route.isDisabled(basePath, routerProps)
-			),
-			args
-		);
+	getRouteFor(basePath, ...args) {
+		const subRoute = getSubRoute(this.routes, args);
 
 		if (typeof subRoute === 'function') {
 			return subRoute;
