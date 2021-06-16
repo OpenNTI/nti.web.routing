@@ -35,11 +35,12 @@ export default function RouteWrapper({
 	};
 
 	if (getRedirect) {
-		return (
-			<RedirectToPath
-				to={getRedirect({ ...props, ...(hasFrame ? frameProps : {}) })}
-			/>
-		);
+		const redirect = getRedirect({
+			...props,
+			...(hasFrame ? frameProps : {}),
+		});
+
+		return redirect == null ? null : <RedirectToPath to={redirect} />;
 	}
 
 	if (hasFrame) {
