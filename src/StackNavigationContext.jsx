@@ -67,3 +67,9 @@ export function NavigationStackManager({ children }) {
 		</NavigationStackContext.Provider>
 	);
 }
+
+/**
+ * @returns {StackInterface}
+ */
+export const useNavigationStackContext = () =>
+	useContext(NavigationStackContext);
