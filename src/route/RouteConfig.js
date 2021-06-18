@@ -178,7 +178,7 @@ export default class RouteConfig {
 		const subRouter = this.getSubRouter();
 		const subRoute =
 			!this.hasPathParams() && subRouter
-				? subRouter.getRouteFor(config.path, obj, ...args)
+				? subRouter.getRouteFor(config.path[0], obj, ...args)
 				: null;
 
 		return subRoute || null;
