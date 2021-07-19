@@ -18,6 +18,7 @@ import RouteForProvider from './RouteForProvider';
 let globalGetRouteFor = null;
 
 export default class Router extends React.Component {
+	static Context = Context;
 	static RouteForProvider = RouteForProvider;
 	static useRouter = Context.useRouter;
 	static setGlobalGetRouteFor(getRouteFor) {
