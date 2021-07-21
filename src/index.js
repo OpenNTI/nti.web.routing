@@ -9,6 +9,7 @@ export * as View from './view';
 export { default as Disable } from './router/Disable';
 export * from './utils';
 export * from './StackNavigationContext';
+export * from './BasePathContext';
 
 import {
 	useLocation,
