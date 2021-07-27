@@ -10,7 +10,7 @@ ContextMerger.contextTypes = {
 
 export function ContextMerger(props, legacyContext) {
 	const context = React.useContext(RouterContext);
-	const useThisContext = { ...legacyContext.router, ...context };
+	const useThisContext = { ...legacyContext?.router, ...context };
 	return (
 		<RouterContext.Provider value={useThisContext}>
 			{props.children(useThisContext)}
