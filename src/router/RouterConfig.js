@@ -4,7 +4,7 @@ import { defineProtected } from '@nti/lib-commons';
 
 function getSubRoute(routes, args) {
 	for (let route of routes) {
-		let subRoute = route.getRouteFor && route.getRouteFor(...args);
+		let subRoute = route.getRouteFor?.(...args);
 
 		if (subRoute) {
 			return subRoute;
@@ -17,6 +17,7 @@ function getSubRoute(routes, args) {
 export default class RouterConfig {
 	/**
 	 * Creates a router config
+	 *
 	 * @param  {[RouteConfig]} routes a list of route configs
 	 * @returns {RouterConfig}           a router config for the given routes
 	 */
@@ -39,6 +40,12 @@ export default class RouterConfig {
 			return subRoute;
 		}
 
-		return subRoute ? Path.resolve(basePath, subRoute) : null;
+		return subRoute
+			? Path.resolve(basePath, slashToDotSlash(subRoute))
+			: null;
 	}
+}
+
+function slashToDotSlash(p) {
+	return p === '/' ? './' : p;
 }
