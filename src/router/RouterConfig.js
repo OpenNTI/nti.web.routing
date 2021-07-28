@@ -41,11 +41,9 @@ export default class RouterConfig {
 		}
 
 		return subRoute
-			? Path.resolve(basePath, slashToDotSlash(subRoute))
+			? subRoute.startsWith(basePath)
+				? subRoute
+				: Path.join(basePath, subRoute)
 			: null;
 	}
-}
-
-function slashToDotSlash(p) {
-	return p === '/' ? './' : p;
 }
