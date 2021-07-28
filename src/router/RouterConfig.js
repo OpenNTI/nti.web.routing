@@ -14,6 +14,12 @@ function getSubRoute(routes, args) {
 	return null;
 }
 
+/**
+ * @typedef {Object} RouteConfig
+ * @property {string} path
+ * @property {(...x: any[]) => string} getRouteFor
+ */
+
 export default class RouterConfig {
 	/**
 	 * Creates a router config
