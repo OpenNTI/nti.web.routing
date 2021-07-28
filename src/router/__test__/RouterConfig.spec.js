@@ -42,7 +42,7 @@ describe('RouterConfig', () => {
 			const router = new RouterConfig(routes);
 			const args = ['arg1', 'arg2', 'arg3'];
 
-			router.getRouteFor('base/path/', ...args);
+			router.getRouteFor('/base/path/', ...args);
 
 			for (let route of routes) {
 				expect(route.getRouteFor).toHaveBeenCalledWith(...args);
@@ -68,14 +68,16 @@ describe('RouterConfig', () => {
 			const routes = [makeRoute('route1'), makeRoute('route2')];
 			const router = new RouterConfig(routes);
 
-			expect(router.getRouteFor('base/path/')).toBeNull();
+			expect(router.getRouteFor('/base/path/')).toBeNull();
 		});
 
 		test('Joins the basepath to the route', () => {
 			const routes = [makeRoute('route1', 'route')];
 			const router = new RouterConfig(routes);
 
-			expect(router.getRouteFor('base/path/')).toEqual('base/path/route');
+			expect(router.getRouteFor('/base/path/')).toEqual(
+				'/base/path/route'
+			);
 		});
 	});
 });

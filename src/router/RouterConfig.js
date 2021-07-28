@@ -39,6 +39,6 @@ export default class RouterConfig {
 			return subRoute;
 		}
 
-		return subRoute ? Path.join(basePath, subRoute) : null;
+		return subRoute ? Path.resolve(basePath, subRoute) : null;
 	}
 }
