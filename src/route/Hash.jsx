@@ -26,10 +26,10 @@ HashRoute.contextTypes = {
 	}),
 };
 
-export default function HashRoute({ matches, render }, { router }) {
+export default function HashRoute({ matches, render }, context) {
 	const { hash, pathname } = useLocation();
 
-	const setHash = () => void router?.routeTo.path(pathname);
+	const setHash = () => void context?.router?.routeTo.path(pathname);
 
 	return doesMatch(hash, matches) ? render(hash, setHash) : null;
 }
