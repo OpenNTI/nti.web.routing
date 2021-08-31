@@ -10,14 +10,14 @@ import getHistory from '../history';
 
 import { getFrameProps } from './utils';
 import Context from './Context';
-import BrowserRouter from './BrowserRouter';
+import { BrowserRouter } from './BrowserRouter';
 import RouterConfig from './RouterConfig';
 import FrameWrapper from './Frame';
 import RouteForProvider from './RouteForProvider';
 
 let globalGetRouteFor = null;
 
-export default class Router extends React.Component {
+export class Router extends React.Component {
 	static Context = Context;
 	static RouteForProvider = RouteForProvider;
 	static useRouter = Context.useRouter;

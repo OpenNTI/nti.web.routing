@@ -1,19 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
 import { Router } from 'react-router-dom';
 
 import getHistory from '../history';
 
-export default class BrowserRouter extends React.Component {
-	static propTypes = {
-		children: PropTypes.node,
-	};
-
-	history = getHistory();
-
-	render() {
-		const { history } = this;
-
-		return <Router history={history}>{this.props.children}</Router>;
-	}
+export function BrowserRouter({ children }) {
+	const history = useMemo(getHistory, []);
+	return <Router history={history}>{children}</Router>;
 }

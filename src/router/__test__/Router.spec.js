@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TestRenderer from 'react-test-renderer';
 
-import BrowserRouter from '../BrowserRouter';
-import Router from '../Router';
+import { BrowserRouter } from '../BrowserRouter';
+import { Router } from '../Router';
 import RouterConfig from '../RouterConfig';
 import { WithTitle } from '../../view/';
 import { ContextMerger } from '../utils/context-merger';

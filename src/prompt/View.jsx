@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Router from '../router';
+import { Router } from '../router';
 import getHistory from '../history';
 
 import { addPrompt } from './Store';

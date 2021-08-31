@@ -3,7 +3,7 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import TestRenderer from 'react-test-renderer';
 
-import BrowserRouter from '../BrowserRouter';
+import { BrowserRouter } from '../BrowserRouter';
 import getHistory from '../../history';
 
 const history = getHistory();
