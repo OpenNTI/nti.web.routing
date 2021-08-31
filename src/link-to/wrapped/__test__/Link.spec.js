@@ -26,6 +26,7 @@ function renderLink(props) {
 			return {
 				router: {
 					history,
+					location: history.location,
 				},
 			};
 		}
