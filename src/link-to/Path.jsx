@@ -9,7 +9,7 @@ import { isExternal, resolveRoute } from '../utils';
 import { Link, NavLink } from './wrapped';
 
 const Path = styled.a`
-	a& {
+	&:where(:not(:global(.nti-button))) {
 		text-decoration: none;
 		outline: none;
 		color: var(--text-color-nav-link, inherit);
