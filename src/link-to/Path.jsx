@@ -9,12 +9,14 @@ import { isExternal, resolveRoute } from '../utils';
 import { Link, NavLink } from './wrapped';
 
 const Path = styled.a`
-	text-decoration: none;
-	outline: none;
-	color: var(--text-color-nav-link, inherit);
-
-	&:focus {
+	a& {
+		text-decoration: none;
 		outline: none;
+		color: var(--text-color-nav-link, inherit);
+
+		&:focus {
+			outline: none;
+		}
 	}
 `;
 
