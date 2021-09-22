@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 
-import { PropTypes as PT } from '@nti/lib-commons';
-
 import * as LinkTo from '../link-to';
 import { WithTitle } from '../view';
 import getHistory from '../history';
@@ -72,7 +70,7 @@ export class Router extends React.Component {
 		_routerProps: PropTypes.object,
 
 		title: PropTypes.string,
-		frame: PT.component,
+		frame: PropTypes.elementType,
 
 		baseroute: PropTypes.any,
 		match: PropTypes.object,
