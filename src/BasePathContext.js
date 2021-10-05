@@ -10,3 +10,7 @@ export function BasePath({ path, ...props }) {
 		<BasePathContext.Provider value={resolve(basePath, path)} {...props} />
 	);
 }
+
+export function useBasePath() {
+	return useContext(BasePathContext);
+}
