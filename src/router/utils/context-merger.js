@@ -1,4 +1,4 @@
-import React from 'react';
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { __RouterContext as RouterContext } from 'react-router';
 
@@ -9,7 +9,7 @@ ContextMerger.contextTypes = {
 };
 
 export function ContextMerger(props, legacyContext) {
-	const context = React.useContext(RouterContext);
+	const context = useContext(RouterContext);
 	const useThisContext = { ...legacyContext?.router, ...context };
 	return (
 		<RouterContext.Provider value={useThisContext}>

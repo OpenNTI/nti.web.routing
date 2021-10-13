@@ -1,4 +1,4 @@
-import React from 'react';
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import Frame from '../router/Frame';
@@ -23,7 +23,7 @@ export default function RouteWrapper({
 	component,
 	getRedirect,
 }) {
-	const { frameProps } = React.useContext(Frame.Context);
+	const { frameProps } = useContext(Frame.Context);
 	const params = getParamProps(routeProps);
 
 	const props = {

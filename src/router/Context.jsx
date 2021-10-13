@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 const Context = React.createContext();
 
 export default class RouterContext extends React.Component {
 	static useRouter = () => {
-		return React.useContext(Context);
+		return useContext(Context);
 	};
 
 	static propTypes = {

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Router } from '../router';
@@ -12,7 +12,7 @@ RouterPromptInner.propTypes = {
 function RouterPromptInner({ onRoute }) {
 	const router = Router.useRouter();
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const history = router?.history ?? getHistory();
 
 		return addPrompt(onRoute, history);
