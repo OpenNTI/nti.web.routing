@@ -1,5 +1,4 @@
 /* eslint-env jest */
-import React from 'react';
 import { Router } from 'react-router-dom';
 import TestRenderer from 'react-test-renderer';
 

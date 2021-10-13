@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
-import React, { useCallback, useContext } from 'react';
-import PropTypes, { func } from 'prop-types';
+ 
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { ContextMerger } from '../../router/utils/context-merger';

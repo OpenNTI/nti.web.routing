@@ -1,4 +1,3 @@
-import React from 'react';
 
 import * as LinkTo from '../link-to';
 
