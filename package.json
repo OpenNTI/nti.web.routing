@@ -25,7 +25,7 @@
     "@nti/util-logger": "NextThought/nti.util.logger",
     "@nti/web-client": "NextThought/nti.web.client",
     "history": "^4.10.1",
-    "react-router": "^5.2.0",
+    "react-router": "^6.4.1",
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
